@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Masuk - NamaAplikasi</title>
+    <!-- Font Google 'Inter' untuk konsistensi -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      /* remove arrow field type number */
+
+      /* Untuk Chrome, Safari, Edge, Opera */
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Untuk Firefox */
+      input[type="number"] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+      }
+
+      :root {
+        --primary-color: #16a34a; /* Hijau Utama */
+        --primary-hover: #15803d; /* Hijau saat hover */
+        --bg-color: #ffffff;
+        --text-dark: #1f2937;
+        --text-muted: #6b7280;
+        --border-color: #e5e7eb;
+        --input-bg: #f9fafb;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-dark);
+        min-height: 100vh;
+        display: flex;
+      }
+
+      .login-container {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+      }
+
+      /* PERBEDAAN UX: Gambar berpindah ke sebelah KIRI */
+      .left-section {
+        flex: 1.2;
+        background-image: url("https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop");
+        background-size: cover;
+        background-position: center;
+        position: relative;
+      }
+
+      /* Overlay dengan gradien hijau halus untuk variasi visual */
+      .left-section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(22, 163, 74, 0.3) 0%,
+          rgba(15, 23, 42, 0.4) 100%
+        );
+      }
+
+      /* Form diletakkan di sebelah KANAN */
+      .right-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 2.5rem 4rem;
+        max-width: 600px;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      /* Header Aplikasi */
+      .app-header {
+        margin-bottom: 2rem;
+      }
+
+      .app-logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 1.5rem;
+      }
+
+      .app-header h1 {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+      }
+
+      .app-header p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
+
+      /* Form Group */
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--text-dark);
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1.5px solid var(--border-color);
+        border-radius: 8px;
+        background-color: var(--input-bg);
+        font-size: 0.95rem;
+        color: var(--text-dark);
+        transition: all 0.2s ease;
+        outline: none;
+      }
+
+      .form-group input:focus {
+        border-color: var(--primary-color);
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+      }
+
+      /* Opsi Tambahan Khusus Login (Ingat Saya & Lupa Password) */
+      .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        font-size: 0.875rem;
+      }
+
+      .remember-me {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-dark);
+        cursor: pointer;
+      }
+
+      .remember-me input[type="checkbox"] {
+        accent-color: var(--primary-color);
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+
+      .forgot-password {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .forgot-password:hover {
+        text-decoration: underline;
+      }
+
+      /* Tombol Login */
+      .btn-submit {
+        width: 100%;
+        padding: 0.85rem;
+        background-color: var(--primary-color);
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .btn-submit:hover {
+        background-color: var(--primary-hover);
+      }
+
+      /* Footer Form */
+      .form-footer {
+        margin-top: 1.5rem;
+        text-align: center;
+        font-size: 0.875rem;
+        color: var(--text-muted);
+      }
+
+      .form-footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .form-footer a:hover {
+        text-decoration: underline;
+      }
+
+      /* Responsif untuk Layar HP/Tablet */
+      @media (max-width: 900px) {
+        .left-section {
+          display: none;
+        }
+        .right-section {
+          padding: 2rem 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <!-- Bagian Kiri: Gambar (Flipped posisi untuk UX yang berbeda) -->
+      <div class="left-section"></div>
+
+      <!-- Bagian Kanan: Header & Form Login -->
+      <div class="right-section">
+        <div class="app-header">
+          <!-- Nama Aplikasi -->
+          <a href="#" class="app-logo">🌿 ClassApp</a>
+          <h1>Login Petugas Pungut</h1>
+          <p>Masukkan username dan password Anda untuk masuk.</p>
+        </div>
+
+        <form action="#" method="POST">
+          <!-- Field 1: No Rekening -->
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Masukkan username"
+              required
+            />
+          </div>
+
+          <!-- Field 2: Password -->
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder=""
+              required
+            />
+          </div>
+
+          <!-- Fitur UX Login: Ingat Saya & Lupa Password -->
+          <div class="form-options">
+            <label class="remember-me">
+              <input type="checkbox" name="remember" />
+              <span>Ingat Saya</span>
+            </label>
+            <a href="#" class="forgot-password">Lupa Password?</a>
+          </div>
+
+          <!-- Tombol Submit -->
+          <button type="submit" class="btn-submit">Masuk</button>
+        </form>
+
+        <div class="form-footer">
+          Belum memiliki akun?
+          <a href="../Register/petugas_pungut.html">Daftar di sini</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

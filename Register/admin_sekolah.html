@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrasi Admin Sekolah - NamaAplikasi</title>
+    <!-- Menggunakan font Google 'Inter' agar tampilan terlihat modern & bersih -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      /* remove arrow field type number */
+
+      /* Untuk Chrome, Safari, Edge, Opera */
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Untuk Firefox */
+      input[type="number"] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+      }
+
+      :root {
+        --primary-color: #16a34a; /* Hijau Utama */
+        --primary-hover: #15803d; /* Hijau saat tombol di-hover */
+        --bg-color: #ffffff; /* Putih */
+        --text-dark: #1f2937;
+        --text-muted: #6b7280;
+        --border-color: #e5e7eb;
+        --input-bg: #f9fafb;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-dark);
+        min-height: 100vh;
+        display: flex;
+      }
+
+      /* Layout Utama */
+      .register-container {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+      }
+
+      /* Bagian Kiri: Form Registrasi */
+      .left-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 2.5rem 4rem;
+        max-width: 600px;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      /* Header Aplikasi */
+      .app-header {
+        margin-bottom: 2rem;
+      }
+
+      .app-logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 1.5rem;
+      }
+
+      .app-header h1 {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+      }
+
+      .app-header p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
+
+      /* Form & Input */
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--text-dark);
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1.5px solid var(--border-color);
+        border-radius: 8px;
+        background-color: var(--input-bg);
+        font-size: 0.95rem;
+        color: var(--text-dark);
+        transition: all 0.2s ease;
+        outline: none;
+      }
+
+      .form-group input:focus {
+        border-color: var(--primary-color);
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+      }
+
+      /* field school auto complete */
+
+      .autocomplete-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-radius: 8px;
+        border-top: none;
+        z-index: 99;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 200px;
+        overflow-y: auto;
+        background-color: #fff;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .autocomplete-item {
+        padding: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: background-color 0.2s;
+      }
+
+      .autocomplete-item:hover {
+        background-color: #f0f0f0;
+      }
+
+      .autocomplete-item img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        border-radius: 4px;
+      }
+
+      /* Tombol Registrasi */
+      .btn-submit {
+        width: 100%;
+        padding: 0.85rem;
+        background-color: var(--primary-color);
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        margin-top: 0.5rem;
+      }
+
+      .btn-submit:hover {
+        background-color: var(--primary-hover);
+      }
+
+      /* Footer Form (Masuk/Login link) */
+      .form-footer {
+        margin-top: 1.5rem;
+        text-align: center;
+        font-size: 0.875rem;
+        color: var(--text-muted);
+      }
+
+      .form-footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .form-footer a:hover {
+        text-decoration: underline;
+      }
+
+      /* Bagian Kanan: Gambar */
+      .right-section {
+        flex: 1.2;
+        background-image: url("https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop");
+        background-size: cover;
+        background-position: center;
+        position: relative;
+      }
+
+      /* Overlay hijau tipis di atas gambar agar sesuai tema */
+      .right-section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(22, 163, 74, 0.15);
+      }
+
+      /* Responsif untuk Layar HP/Tablet */
+      @media (max-width: 900px) {
+        .right-section {
+          display: none; /* Sembunyikan gambar pada layar kecil */
+        }
+        .left-section {
+          padding: 2rem 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="register-container">
+      <!-- Bagian Kiri: Header & Form -->
+      <div class="left-section">
+        <div class="app-header">
+          <!-- Nama Aplikasi -->
+          <a href="#" class="app-logo">🌿 ClassApp</a>
+          <h1>Buat Akun Admin Sekolah Baru</h1>
+          <p>Silakan isi formulir di bawah ini untuk mendaftar.</p>
+        </div>
+
+        <form action="../Login/admin_sekolah.html" method="post">
+          <!-- Field 1: Nama -->
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Masukkan username lengkap"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="sekolah">Sekolah asal</label>
+            <div class="autocomplete-wrapper">
+              <input
+                type="text"
+                id="sekolah"
+                name="sekolah"
+                placeholder="Ketik nama sekolah..."
+                autocomplete="off"
+                required
+              />
+              <!-- Container untuk daftar hasil pencarian -->
+              <div id="sekolah-list" class="autocomplete-items"></div>
+            </div>
+          </div>
+
+          <!-- Field 3: Password -->
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+
+          <!-- Field 4: Konfirmasi Password -->
+          <div class="form-group">
+            <label for="confirm_password">Konfirmasi Password</label>
+            <input
+              type="password"
+              id="confirm_password"
+              name="confirm_password"
+              required
+            />
+          </div>
+
+          <!-- Tombol Submit -->
+          <button type="submit" class="btn-submit">Daftar Sekarang</button>
+        </form>
+
+        <div class="form-footer">
+          Sudah memiliki akun?
+          <a href="../Login/admin_sekolah.html">Masuk di sini</a>
+        </div>
+      </div>
+
+      <!-- Bagian Kanan: Gambar -->
+      <div class="right-section"></div>
+    </div>
+    <script>
+      // Data daftar sekolah (bisa ditambah atau diambil dari API)
+      const dataSekolah = [
+        {
+          id: 1,
+          nama: "SMA Negeri 1 Jakarta",
+          logo: "https://via.placeholder.com/30?text=SMA1",
+        },
+        {
+          id: 2,
+          nama: "SMA Negeri 2 Bandung",
+          logo: "https://via.placeholder.com/30?text=SMA2",
+        },
+        {
+          id: 3,
+          nama: "SMK Negeri 1 Surabaya",
+          logo: "https://via.placeholder.com/30?text=SMK1",
+        },
+        {
+          id: 4,
+          nama: "SMA Garuda Bangsa",
+          logo: "https://via.placeholder.com/30?text=GARUDA",
+        },
+      ];
+
+      const inputSekolah = document.getElementById("sekolah");
+      const listContainer = document.getElementById("sekolah-list");
+
+      inputSekolah.addEventListener("input", function () {
+        const val = this.value.toLowerCase();
+        listContainer.innerHTML = ""; // Bersihkan list sebelumnya
+
+        if (!val) return;
+
+        // Filter sekolah yang cocok
+        const filtered = dataSekolah.filter((item) =>
+          item.nama.toLowerCase().includes(val),
+        );
+
+        // Tampilkan hasil pencarian
+        filtered.forEach((item) => {
+          const div = document.createElement("div");
+          div.classList.add("autocomplete-item");
+
+          // Elemen Logo + Nama
+          div.innerHTML = `
+      <img src="${item.logo}" alt="Logo ${item.nama}" />
+      <span>${item.nama}</span>
+    `;
+
+          // Event ketika item dipilih
+          div.addEventListener("click", function () {
+            inputSekolah.value = item.nama;
+            listContainer.innerHTML = ""; // Sembunyikan list setelah dipilih
+          });
+
+          listContainer.appendChild(div);
+        });
+      });
+
+      // Sembunyikan dropdown jika user mengklik di luar input
+      document.addEventListener("click", function (e) {
+        if (e.target !== inputSekolah) {
+          listContainer.innerHTML = "";
+        }
+      });
+    </script>
+  </body>
+</html>
