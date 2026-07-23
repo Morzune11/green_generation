@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laporan Timestamp - ClassApp</title>
+    <!-- Google Font 'Inter' -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      :root {
+        --primary-color: #16a34a;
+        --primary-hover: #15803d;
+        --primary-light: #f0fdf4;
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-dark: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-dark);
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* --- SIDEBAR --- */
+      .sidebar {
+        width: 260px;
+        background-color: var(--card-bg);
+        border-right: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 2rem 1.5rem;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+      }
+
+      .brand {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .role-badge {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-left: auto;
+      }
+
+      .nav-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .nav-item a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+      }
+
+      .nav-item a:hover,
+      .nav-item.active a {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+
+      /* --- MAIN CONTENT --- */
+      .main-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 2rem 2.5rem;
+      }
+
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+
+      .page-title-area h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .page-title-area p {
+        color: var(--text-muted);
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+      }
+
+      .btn-add-new {
+        background-color: var(--primary-color);
+        color: white;
+        text-decoration: none;
+        padding: 0.65rem 1.25rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: background-color 0.2s ease;
+      }
+
+      .btn-add-new:hover {
+        background-color: var(--primary-hover);
+      }
+
+      /* --- REPORT CARD & TABLE --- */
+      .report-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        padding: 1.75rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+
+      .table-wrapper {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f8fafc;
+        color: var(--text-dark);
+        padding: 0.85rem 1rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        border-bottom: 2px solid var(--border-color);
+        text-transform: uppercase;
+      }
+
+      td {
+        padding: 0.85rem 1rem;
+        font-size: 0.875rem;
+        border-bottom: 1px solid var(--border-color);
+        vertical-align: middle;
+      }
+
+      .timestamp-badge {
+        background-color: #e2e8f0;
+        color: var(--text-dark);
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 0.75rem;
+        display: inline-block;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+        .main-content {
+          margin-left: 0;
+          padding: 1.5rem 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Sidebar -->
+    <aside class="sidebar">
+      <div>
+        <a href="#" class="brand">
+          <span>🌿</span>
+          <span>ClassApp</span>
+          <span class="role-badge">Petugas</span>
+        </a>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="setor_plastik_petugas_pungut.html">
+              <span>📝</span>
+              <span>Setor Plastik</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a href="laporan_petugas_pungut.html">
+              <span>📑</span>
+              <span>Laporan Hasil Pemungutan</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="../Login/petugas_pungut.html" class="logout-link">
+            <span
+              ><img
+                src="../Icons/logout.png"
+                alt="logout"
+                srcset=""
+                width="15px"
+            /></span>
+            <span>Keluar</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-bar">
+        <div class="page-title-area">
+          <h1>Laporan Pemungutan Plastik</h1>
+          <p>
+            Daftar seluruh transaksi pemungutan lengkap dengan Waktu System
+            (Timestamp).
+          </p>
+        </div>
+        <a href="setor_plastik_petugas_pungut.html" class="btn-add-new"
+          >+ Tambah Input Baru</a
+        >
+      </header>
+
+      <div class="report-card">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID & Nama Sekolah</th>
+                <th>Jenis Plastik</th>
+                <th>Jumlah Berat</th>
+                <th>Timestamp Pencatatan</th>
+              </tr>
+            </thead>
+            <tbody id="reportTableBody">
+              <!-- Data akan di-load secara dinamis via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function loadReports() {
+        // Ambil data dari LocalStorage
+        let reports = JSON.parse(localStorage.getItem("laporan_pungut"));
+
+        // Default dummy data jika belum ada data di LocalStorage
+        if (!reports || reports.length === 0) {
+          reports = [
+            {
+              idSekolah: "2026001",
+              namaSekolah: "SMAN 1 Madiun",
+              jenisPlastik: "Botol PET",
+              jumlahBerat: "50",
+              timestamp: "23/07/2026 09:15:22",
+            },
+            {
+              idSekolah: "2026002",
+              namaSekolah: "SMAN 2 Madiun",
+              jenisPlastik: "Gelas PP",
+              jumlahBerat: "32",
+              timestamp: "23/07/2026 10:40:05",
+            },
+          ];
+          localStorage.setItem("laporan_pungut", JSON.stringify(reports));
+        }
+
+        const tableBody = document.getElementById("reportTableBody");
+        tableBody.innerHTML = "";
+
+        // Render baris tabel
+        reports.forEach((item) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>
+                        <strong>#${item.idSekolah}</strong><br>
+                        <span style="color: var(--text-muted);">${item.namaSekolah}</span>
+                    </td>
+                    <td>${item.jenisPlastik}</td>
+                    <td><strong>${item.jumlahBerat} Kg</strong></td>
+                    <td><span class="timestamp-badge">${item.timestamp}</span></td>
+                `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      // Jalankan saat halaman dibuka
+      window.onload = loadReports;
+    </script>
+  </body>
+</html>

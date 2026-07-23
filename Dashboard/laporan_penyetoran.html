@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laporan Penyetoran - ClassApp</title>
+    <!-- Google Font 'Inter' -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      :root {
+        --primary-color: #16a34a;
+        --primary-hover: #15803d;
+        --primary-light: #f0fdf4;
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-dark: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-dark);
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* --- SIDEBAR --- */
+      .sidebar {
+        width: 260px;
+        background-color: var(--card-bg);
+        border-right: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 2rem 1.5rem;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+      }
+
+      .brand {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .role-badge {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-left: auto;
+      }
+
+      .nav-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .nav-item a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+      }
+
+      .nav-item a:hover,
+      .nav-item.active a {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+
+      /* --- MAIN CONTENT --- */
+      .main-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 2rem 2.5rem;
+      }
+
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .page-title-area h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .page-title-area p {
+        color: var(--text-muted);
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: var(--card-bg);
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+        border: 1px solid var(--border-color);
+      }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.875rem;
+      }
+
+      /* --- SELECTION TOGGLE SWITCHER --- */
+      .switcher-container {
+        background-color: #e2e8f0;
+        padding: 4px;
+        border-radius: 10px;
+        display: inline-flex;
+        gap: 4px;
+        margin-bottom: 2rem;
+      }
+
+      .tab-btn {
+        padding: 0.65rem 1.25rem;
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        font-weight: 600;
+        font-size: 0.9rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .tab-btn.active {
+        background-color: var(--card-bg);
+        color: var(--primary-color);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      /* --- STATS SUMMARY --- */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .stat-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        padding: 1.25rem;
+        border-radius: 12px;
+      }
+
+      .stat-card p {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+
+      .stat-card h3 {
+        font-size: 1.35rem;
+        font-weight: 700;
+        margin-top: 0.3rem;
+      }
+
+      /* --- FILTER BAR & TABLE CARD --- */
+      .report-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+
+      .filter-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        margin-bottom: 0.4rem;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 0.6rem 0.8rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 0.875rem;
+        outline: none;
+      }
+
+      .form-control:focus {
+        border-color: var(--primary-color);
+      }
+
+      /* --- TABLE STYLES --- */
+      .table-responsive {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.9rem;
+      }
+
+      th {
+        background-color: var(--bg-color);
+        color: var(--text-muted);
+        font-weight: 600;
+        padding: 0.85rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      td {
+        padding: 0.9rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      .badge {
+        padding: 0.25rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      .badge-success {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+      }
+      .badge-warning {
+        background-color: #fef3c7;
+        color: #d97706;
+      }
+
+      .btn-detail {
+        padding: 0.4rem 0.8rem;
+        background-color: var(--bg-color);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        color: var(--text-dark);
+        text-decoration: none;
+        font-size: 0.8rem;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+
+      .btn-detail:hover {
+        background-color: var(--primary-color);
+        color: #ffffff;
+        border-color: var(--primary-color);
+      }
+
+      /* Hidden View Class */
+      .view-section {
+        display: none;
+      }
+
+      .view-section.active {
+        display: block;
+      }
+
+      @media (max-width: 1024px) {
+        .sidebar {
+          width: 80px;
+          padding: 1.5rem 0.75rem;
+          align-items: center;
+        }
+        .brand span,
+        .nav-item span,
+        .role-badge {
+          display: none;
+        }
+        .main-content {
+          margin-left: 80px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .sidebar {
+          display: none;
+        }
+        .main-content {
+          margin-left: 0;
+          padding: 1.5rem 1rem;
+        }
+        .switcher-container {
+          width: 100%;
+          display: flex;
+        }
+        .tab-btn {
+          flex: 1;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div>
+        <a href="#" class="brand">
+          <span>🌿</span>
+          <span>ClassApp</span>
+          <span class="role-badge">Admin</span>
+        </a>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="home.html">
+              <span>📊</span>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a href="laporan_penyetoran.html">
+              <span>📝</span>
+              <span>Laporan Penyetoran</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="setting_data.html">
+              <span>⚙️</span>
+              <span>Setting Data</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="../Login/admin_bank.html" class="logout-link">
+            <span
+              ><img
+                src="../Icons/logout.png"
+                alt="logout"
+                srcset=""
+                width="15px"
+            /></span>
+            <span>Keluar</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <header class="top-bar">
+        <div class="page-title-area">
+          <h1>Laporan Rekapitulasi</h1>
+          <p>Pilih mode tampilan laporan untuk menganalisis data penyetoran.</p>
+        </div>
+        <div class="user-profile">
+          <div class="avatar">AD</div>
+          <div style="display: flex; flex-direction: column">
+            <span style="font-size: 0.875rem; font-weight: 600"
+              >Admin Bank</span
+            >
+            <span style="font-size: 0.75rem; color: var(--text-muted)"
+              >BNI</span
+            >
+          </div>
+        </div>
+      </header>
+
+      <!-- SELECTION TAB SWITCHER (Siswa VS Sekolah) -->
+      <div class="switcher-container">
+        <button
+          class="tab-btn active"
+          id="btn-siswa"
+          onclick="switchView('siswa')"
+        >
+          <span>🎓</span> Laporan Per Siswa
+        </button>
+        <button
+          class="tab-btn"
+          id="btn-sekolah"
+          onclick="switchView('sekolah')"
+        >
+          <span>🏫</span> Laporan Per Sekolah
+        </button>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- VIEW 1: LAPORAN SISWA                      -->
+      <!-- ========================================== -->
+      <section id="view-siswa" class="view-section active">
+        <!-- Summary Stats Siswa -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <p>Total Siswa Menyetor</p>
+            <h3>342 Siswa</h3>
+          </div>
+          <div class="stat-card">
+            <p>Total Setoran Siswa</p>
+            <h3>1.850 Kg</h3>
+          </div>
+          <div class="stat-card">
+            <p>Poin Terkumpul</p>
+            <h3>18.500 Pts</h3>
+          </div>
+        </div>
+
+        <div class="report-card">
+          <!-- Filter Section -->
+          <div class="filter-grid">
+            <div class="form-group">
+              <label>Filter Sekolah</label>
+              <select class="form-control">
+                <option value="">Semua Sekolah</option>
+                <option>SMAN 1 Madiun</option>
+                <option>SMAN 2 Madiun</option>
+                <option>SMKN 1 Madiun</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Cari Nama / NISN</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Ketik nama siswa..."
+              />
+            </div>
+            <div class="form-group">
+              <label>Periode</label>
+              <input type="month" class="form-control" value="2026-03" />
+            </div>
+          </div>
+
+          <!-- Table Data Siswa -->
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>NISN</th>
+                  <th>Nama Siswa</th>
+                  <th>Sekolah</th>
+                  <th>Kelas</th>
+                  <th>Total Setoran (Kg)</th>
+                  <th>Total Poin</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>0051239841</td>
+                  <td><strong>Budi Santoso</strong></td>
+                  <td>SMAN 1 Madiun</td>
+                  <td>XI IPA 2</td>
+                  <td>24.5 Kg</td>
+                  <td>245 Pts</td>
+                  <td><a href="#" class="btn-detail">Detail</a></td>
+                </tr>
+                <tr>
+                  <td>0058821034</td>
+                  <td><strong>Siti Aminah</strong></td>
+                  <td>SMAN 1 Madiun</td>
+                  <td>X IPS 1</td>
+                  <td>18.0 Kg</td>
+                  <td>180 Pts</td>
+                  <td><a href="#" class="btn-detail">Detail</a></td>
+                </tr>
+                <tr>
+                  <td>0061129482</td>
+                  <td><strong>Rian Hidayat</strong></td>
+                  <td>SMKN 1 Madiun</td>
+                  <td>XII RPL 1</td>
+                  <td>31.2 Kg</td>
+                  <td>312 Pts</td>
+                  <td><a href="#" class="btn-detail">Detail</a></td>
+                </tr>
+                <tr>
+                  <td>0059921473</td>
+                  <td><strong>Dewi Lestari</strong></td>
+                  <td>SMAN 2 Madiun</td>
+                  <td>XI MIPA 4</td>
+                  <td>12.8 Kg</td>
+                  <td>128 Pts</td>
+                  <td><a href="#" class="btn-detail">Detail</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 2: LAPORAN SEKOLAH                    -->
+      <!-- ========================================== -->
+      <section id="view-sekolah" class="view-section">
+        <!-- Summary Stats Sekolah -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <p>Total Sekolah Berpartisipasi</p>
+            <h3>28 Sekolah</h3>
+          </div>
+          <div class="stat-card">
+            <p>Rata-rata Setoran / Sekolah</p>
+            <h3>131.7 Kg</h3>
+          </div>
+          <div class="stat-card">
+            <p>Sekolah Capai Target (>100kg)</p>
+            <h3>19 Sekolah</h3>
+          </div>
+        </div>
+
+        <div class="report-card">
+          <!-- Filter Section -->
+          <div class="filter-grid">
+            <div class="form-group">
+              <label>Filter Kecamatan</label>
+              <select class="form-control">
+                <option value="">Semua Kecamatan</option>
+                <option>Kec. Taman</option>
+                <option>Kec. Kartoharjo</option>
+                <option>Kec. Manguharjo</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Cari Sekolah</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Ketik nama sekolah..."
+              />
+            </div>
+            <div class="form-group">
+              <label>Status Target</label>
+              <select class="form-control">
+                <option value="">Semua Status</option>
+                <option>Tercapai</option>
+                <option>Belum Tercapai</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Table Data Sekolah -->
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>NPSN</th>
+                  <th>Nama Sekolah</th>
+                  <th>Kecamatan</th>
+                  <th>Siswa Aktif</th>
+                  <th>Total Akumulasi</th>
+                  <th>Status Target</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>20534101</td>
+                  <td><strong>SMAN 1 Madiun</strong></td>
+                  <td>Kec. Taman</td>
+                  <td>112 Siswa</td>
+                  <td>1,200 Kg</td>
+                  <td>
+                    <span class="badge badge-success">Target Tercapai</span>
+                  </td>
+                  <td><a href="#" class="btn-detail">Detail</a></td>
+                </tr>
+                <tr>
+                  <td>20534102</td>
+                  <td><strong>SMAN 2 Madiun</strong></td>
+                  <td>Kec. Kartoharjo</td>
+                  <td>85 Siswa</td>
+                  <td>950 Kg</td>
+                  <td>
+                    <span class="badge badge-success">Target Tercapai</span>
+                  </td>
+                  <td><a href="#" class="btn-detail">Detail</a></td>
+                </tr>
+                <tr>
+                  <td>20534105</td>
+                  <td><strong>SMPN 1 Madiun</strong></td>
+                  <td>Kec. Taman</td>
+                  <td>34 Siswa</td>
+                  <td>290 Kg</td>
+                  <td><span class="badge badge-warning">Dalam Proses</span></td>
+                  <td><a href="#" class="btn-detail">Detail</a></td>
+                </tr>
+                <tr>
+                  <td>20534109</td>
+                  <td><strong>SMKN 1 Madiun</strong></td>
+                  <td>Kec. Manguharjo</td>
+                  <td>68 Siswa</td>
+                  <td>500 Kg</td>
+                  <td>
+                    <span class="badge badge-success">Target Tercapai</span>
+                  </td>
+                  <td><a href="#" class="btn-detail">Detail</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- JS FOR TOGGLE FUNCTION -->
+    <script>
+      function switchView(viewType) {
+        // Get Elements
+        const viewSiswa = document.getElementById("view-siswa");
+        const viewSekolah = document.getElementById("view-sekolah");
+        const btnSiswa = document.getElementById("btn-siswa");
+        const btnSekolah = document.getElementById("btn-sekolah");
+
+        if (viewType === "siswa") {
+          // Show Siswa View
+          viewSiswa.classList.add("active");
+          viewSekolah.classList.remove("active");
+
+          // Active Button Style
+          btnSiswa.classList.add("active");
+          btnSekolah.classList.remove("active");
+        } else if (viewType === "sekolah") {
+          // Show Sekolah View
+          viewSekolah.classList.add("active");
+          viewSiswa.classList.remove("active");
+
+          // Active Button Style
+          btnSekolah.classList.add("active");
+          btnSiswa.classList.remove("active");
+        }
+      }
+    </script>
+  </body>
+</html>

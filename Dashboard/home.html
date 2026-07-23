@@ -3,12 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard - ClassApp</title>
+    <title>Dashboard Analytics - ClassApp</title>
     <!-- Google Font 'Inter' -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Plugin DataLabels -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
     <style>
       * {
@@ -27,8 +31,6 @@
         --text-dark: #0f172a;
         --text-muted: #64748b;
         --border-color: #e2e8f0;
-        --danger-color: #ef4444;
-        --danger-light: #fef2f2;
       }
 
       body {
@@ -63,6 +65,16 @@
         margin-bottom: 2.5rem;
       }
 
+      .role-badge {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-left: auto;
+      }
+
       .nav-list {
         list-style: none;
         display: flex;
@@ -90,22 +102,13 @@
         font-weight: 600;
       }
 
-      .logout-link {
-        color: var(--danger-color) !important;
-      }
-
-      .logout-link:hover {
-        background-color: var(--danger-light) !important;
-      }
-
-      /* --- MAIN CONTENT AREA --- */
+      /* --- MAIN CONTENT --- */
       .main-content {
         margin-left: 260px;
         flex: 1;
         padding: 2rem 2.5rem;
       }
 
-      /* Top Bar Header */
       .top-bar {
         display: flex;
         justify-content: space-between;
@@ -113,13 +116,12 @@
         margin-bottom: 2rem;
       }
 
-      .user-welcome h1 {
+      .page-title-area h1 {
         font-size: 1.5rem;
         font-weight: 700;
-        color: var(--text-dark);
       }
 
-      .user-welcome p {
+      .page-title-area p {
         color: var(--text-muted);
         font-size: 0.875rem;
         margin-top: 0.25rem;
@@ -148,182 +150,71 @@
         font-size: 0.875rem;
       }
 
-      .user-info {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .user-name {
-        font-size: 0.875rem;
-        font-weight: 600;
-      }
-
-      .user-class {
-        font-size: 0.75rem;
-        color: var(--text-muted);
-      }
-
-      /* Overview Cards */
-      .cards-grid {
+      /* --- SUMMARY STATS --- */
+      .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.25rem;
         margin-bottom: 2rem;
       }
 
-      .card {
+      .stat-card {
         background-color: var(--card-bg);
-        padding: 1.5rem;
-        border-radius: 12px;
         border: 1px solid var(--border-color);
+        padding: 1.25rem 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
       }
 
-      .card-title {
-        font-size: 0.875rem;
+      .stat-card p {
+        font-size: 0.85rem;
         color: var(--text-muted);
         font-weight: 500;
-        margin-bottom: 0.5rem;
       }
 
-      .card-value {
+      .stat-card h3 {
         font-size: 1.5rem;
         font-weight: 700;
         color: var(--text-dark);
+        margin-top: 0.4rem;
       }
 
-      /* Card highlight khusus Saldo */
-      .card.featured {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
+      /* --- CHARTS GRID --- */
+      .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 1.5rem;
       }
 
-      .card.featured .card-title {
-        color: rgba(255, 255, 255, 0.8);
-      }
-
-      .card.featured .card-value {
-        color: white;
-      }
-
-      .account-number {
-        font-size: 0.75rem;
-        margin-top: 0.75rem;
-        opacity: 0.9;
-        letter-spacing: 0.5px;
-      }
-
-      /* Quick Actions Section */
-      .actions-section {
-        margin-bottom: 2rem;
-      }
-
-      .section-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-      }
-
-      .action-buttons {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-
-      .btn-action {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.75rem 1.25rem;
+      .chart-card {
         background-color: var(--card-bg);
         border: 1px solid var(--border-color);
-        border-radius: 8px;
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var(--text-dark);
-        text-decoration: none;
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-
-      .btn-action:hover {
-        border-color: var(--primary-color);
-        color: var(--primary-color);
-        background-color: var(--primary-light);
-      }
-
-      /* Recent Transactions Table */
-      .table-container {
-        background-color: var(--card-bg);
         border-radius: 12px;
-        border: 1px solid var(--border-color);
         padding: 1.5rem;
-        overflow-x: auto;
-      }
-
-      .table-header {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
         align-items: center;
+      }
+
+      .chart-card h2 {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--text-dark);
         margin-bottom: 1.25rem;
-      }
-
-      .see-all {
-        color: var(--primary-color);
-        text-decoration: none;
-        font-size: 0.875rem;
-        font-weight: 600;
-      }
-
-      .see-all:hover {
-        text-decoration: underline;
-      }
-
-      table {
         width: 100%;
-        border-collapse: collapse;
         text-align: left;
-      }
-
-      th {
-        padding: 0.75rem 1rem;
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: var(--text-muted);
-        text-transform: uppercase;
         border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.75rem;
       }
 
-      td {
-        padding: 1rem;
-        font-size: 0.9rem;
-        border-bottom: 1px solid var(--border-color);
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 300px;
+        height: 300px;
       }
 
-      tr:last-child td {
-        border-bottom: none;
-      }
-
-      /* Status Badges */
-      .badge {
-        padding: 0.25rem 0.6rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        display: inline-block;
-      }
-
-      .badge-success {
-        background-color: #dcfce7;
-        color: #15803d;
-      }
-
-      .badge-danger {
-        background-color: var(--danger-light);
-        color: var(--danger-color);
-      }
-
-      /* Responsif */
       @media (max-width: 1024px) {
         .sidebar {
           width: 80px;
@@ -331,7 +222,8 @@
           align-items: center;
         }
         .brand span,
-        .nav-item span {
+        .nav-item span,
+        .role-badge {
           display: none;
         }
         .main-content {
@@ -347,45 +239,35 @@
           margin-left: 0;
           padding: 1.5rem 1rem;
         }
-        .top-bar {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 1rem;
-        }
       }
     </style>
   </head>
   <body>
-    <!-- Sidebar Navigation -->
+    <!-- Navigation Sidebar -->
     <aside class="sidebar">
       <div>
-        <a href="home.html" class="brand">
+        <a href="#" class="brand">
           <span>🌿</span>
           <span>ClassApp</span>
+          <span class="role-badge">Admin</span>
         </a>
         <ul class="nav-list">
           <li class="nav-item active">
             <a href="home.html">
               <span>📊</span>
-              <span>Home</span>
+              <span>Dashboard</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#">
-              <span>💳</span>
-              <span>Kas & Transaksi</span>
+            <a href="laporan_penyetoran.html">
+              <span>📝</span>
+              <span>Laporan Penyetoran</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#">
-              <span>📄</span>
-              <span>Tagihan Kelas</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#">
+            <a href="setting_data.html">
               <span>⚙️</span>
-              <span>Pengaturan</span>
+              <span>Setting Data</span>
             </a>
           </li>
         </ul>
@@ -406,122 +288,244 @@
       </ul>
     </aside>
 
-    <!-- Main Content Area -->
+    <!-- Main Content -->
     <main class="main-content">
-      <!-- Top Bar Header -->
       <header class="top-bar">
-        <div class="user-welcome">
-          <h1>Halo, Budi Santoso 👋</h1>
-          <p>Berikut adalah ringkasan akun dan kas kelas Anda hari ini.</p>
+        <div class="page-title-area">
+          <h1>Dashboard Ringkasan</h1>
+          <p>Visualisasi data setoran & statistik pemungutan sampah plastik.</p>
         </div>
         <div class="user-profile">
-          <div class="avatar">BS</div>
-          <div class="user-info">
-            <span class="user-name">Budi Santoso</span>
-            <span class="user-class">Kelas: XII IPA 1</span>
+          <div class="avatar">AD</div>
+          <div style="display: flex; flex-direction: column">
+            <span style="font-size: 0.875rem; font-weight: 600"
+              >Admin Bank</span
+            >
+            <span style="font-size: 0.75rem; color: var(--text-muted)"
+              >BNI</span
+            >
           </div>
         </div>
       </header>
 
-      <!-- Cards Overview Grid -->
-      <section class="cards-grid">
-        <div class="card featured">
-          <div class="card-title">Saldo Rekening Kas</div>
-          <div class="card-value">Rp 1.250.000</div>
-          <div class="account-number">No. Rek: 1234567890</div>
+      <!-- Dynamic Summary Stats Card -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <p>Total Pendapatan Bulan Ini</p>
+          <h3>Rp 18.450.000</h3>
         </div>
+        <div class="stat-card">
+          <p>Total Sampah Terkumpul</p>
+          <h3>3.690 Kg</h3>
+        </div>
+        <div class="stat-card">
+          <p>Sekolah Aktif Menyetor</p>
+          <h3>28 Sekolah</h3>
+        </div>
+      </div>
 
-        <div class="card">
-          <div class="card-title">Total Pemasukan Bulan Ini</div>
-          <div class="card-value" style="color: var(--primary-color)">
-            + Rp 450.000
+      <!-- Charts Grid (Sesuai 3 Point Permintaan) -->
+      <div class="charts-grid">
+        <!-- CHART 1: Pendapatan bulan ini all (Pie per jenis plastik persentase) -->
+        <div class="chart-card">
+          <h2>1. Pendapatan Per Jenis Plastik (%)</h2>
+          <div class="chart-container">
+            <canvas id="jenisPlastikChart"></canvas>
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-title">Pengeluaran Bulan Ini</div>
-          <div class="card-value" style="color: var(--danger-color)">
-            - Rp 120.000
+        <!-- CHART 2: 5 besar sekolah penyetor terbanyak (Pie per sekolah) -->
+        <div class="chart-card">
+          <h2>2. 5 Besar Sekolah Penyetor</h2>
+          <div class="chart-container">
+            <canvas id="sekolahChart"></canvas>
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-title">Status Iuran Kas</div>
-          <div class="card-value">
-            <span class="badge badge-success">Lunas (Juli 2026)</span>
+        <!-- CHART 3: 5 besar kecamatan terbanyak (Pie per kecamatan) -->
+        <div class="chart-card">
+          <h2>3. 5 Besar Kecamatan Terbanyak</h2>
+          <div class="chart-container">
+            <canvas id="kecamatanChart"></canvas>
           </div>
         </div>
-      </section>
-
-      <!-- Quick Actions -->
-      <section class="actions-section">
-        <h2 class="section-title">Aksi Cepat</h2>
-        <div class="action-buttons">
-          <button class="btn-action">💸 Bayar Kas Kelas</button>
-          <button class="btn-action">📥 Transfer / Setor</button>
-          <button class="btn-action">📊 Unduh Laporan (PDF)</button>
-        </div>
-      </section>
-
-      <!-- Table Recent Transactions -->
-      <section class="table-container">
-        <div class="table-header">
-          <h2 class="section-title" style="margin-bottom: 0">
-            Riwayat Transaksi Terakhir
-          </h2>
-          <a href="#" class="see-all">Lihat Semua</a>
-        </div>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Deskripsi</th>
-              <th>Tanggal</th>
-              <th>Kategori</th>
-              <th>Status</th>
-              <th>Jumlah</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Iuran Kas Mingguan</strong></td>
-              <td>22 Jul 2026</td>
-              <td>Kas Masuk</td>
-              <td><span class="badge badge-success">Berhasil</span></td>
-              <td style="color: var(--primary-color); font-weight: 600">
-                + Rp 20.000
-              </td>
-            </tr>
-            <tr>
-              <td><strong>Pembelian Perlengkapan Kelas</strong></td>
-              <td>18 Jul 2026</td>
-              <td>Pengeluaran</td>
-              <td><span class="badge badge-success">Berhasil</span></td>
-              <td style="color: var(--danger-color); font-weight: 600">
-                - Rp 50.000
-              </td>
-            </tr>
-            <tr>
-              <td><strong>Iuran Kas Mingguan</strong></td>
-              <td>15 Jul 2026</td>
-              <td>Kas Masuk</td>
-              <td><span class="badge badge-success">Berhasil</span></td>
-              <td style="color: var(--primary-color); font-weight: 600">
-                + Rp 20.000
-              </td>
-            </tr>
-            <tr>
-              <td><strong>Sewa Proyektor Presentasi</strong></td>
-              <td>10 Jul 2026</td>
-              <td>Pengeluaran</td>
-              <td><span class="badge badge-success">Berhasil</span></td>
-              <td style="color: var(--danger-color); font-weight: 600">
-                - Rp 70.000
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+      </div>
     </main>
+
+    <!-- CHART.JS LOGIC -->
+    <script>
+      Chart.register(ChartDataLabels);
+      // Palette Warna Modern
+      const colorPalette = [
+        "#16a34a", // Emerald Green
+        "#0284c7", // Sky Blue
+        "#f59e0b", // Amber
+        "#8b5cf6", // Purple
+        "#ec4899", // Pink
+        "#64748b", // Slate
+      ];
+
+      // 1. Chart Pendapatan Bulan Ini (Pie Per Jenis Plastik - Persentase)
+      const ctxJenis = document
+        .getElementById("jenisPlastikChart")
+        .getContext("2d");
+      new Chart(ctxJenis, {
+        type: "pie",
+        data: {
+          labels: ["Botol PET", "Gelas PP", "Plastik HDPE", "Campuran"],
+          datasets: [
+            {
+              data: [45, 25, 20, 10], // Persentase %
+              backgroundColor: colorPalette,
+              borderWidth: 2,
+              borderColor: "#ffffff",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "bottom" },
+            datalabels: {
+              color: "#ffffff", // Warna teks persentase
+              font: {
+                weight: "bold",
+                size: 13,
+              },
+              formatter: (value, context) => {
+                // Hitung total seluruh data
+                const total = context.chart.data.datasets[0].data.reduce(
+                  (a, b) => a + b,
+                  0,
+                );
+                // Hitung persentase
+                const percentage = ((value / total) * 100).toFixed(1) + "%";
+                return percentage; // Tampilkan hasil persentase
+              },
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  return ` ${context.label}: ${context.raw}%`;
+                },
+              },
+            },
+          },
+        },
+      });
+
+      // 2. Chart 5 Besar Sekolah Penyetor Terbanyak
+      const ctxSekolah = document
+        .getElementById("sekolahChart")
+        .getContext("2d");
+      new Chart(ctxSekolah, {
+        type: "pie",
+        data: {
+          labels: [
+            "SMAN 1 Madiun",
+            "SMAN 2 Madiun",
+            "SMAN 3 Madiun",
+            "SMKN 1 Madiun",
+            "SMPN 1 Madiun",
+          ],
+          datasets: [
+            {
+              data: [1200, 950, 750, 500, 290], // Jumlah Berat dalam Kg
+              backgroundColor: colorPalette,
+              borderWidth: 2,
+              borderColor: "#ffffff",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "bottom" },
+            datalabels: {
+              color: "#ffffff", // Warna teks persentase
+              font: {
+                weight: "bold",
+                size: 13,
+              },
+              formatter: (value, context) => {
+                // Hitung total seluruh data
+                const total = context.chart.data.datasets[0].data.reduce(
+                  (a, b) => a + b,
+                  0,
+                );
+                // Hitung persentase
+                const percentage = ((value / total) * 100).toFixed(1) + "%";
+                return percentage; // Tampilkan hasil persentase
+              },
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  return ` ${context.label}: ${context.raw} Kg`;
+                },
+              },
+            },
+          },
+        },
+      });
+
+      // 3. Chart 5 Besar Kecamatan Terbanyak
+      const ctxKecamatan = document
+        .getElementById("kecamatanChart")
+        .getContext("2d");
+      new Chart(ctxKecamatan, {
+        type: "pie",
+        data: {
+          labels: [
+            "Kec. Taman",
+            "Kec. Kartoharjo",
+            "Kec. Manguharjo",
+            "Kec. Jiwan",
+            "Kec. Gantar",
+          ],
+          datasets: [
+            {
+              data: [35, 28, 18, 12, 7], // Persentase kontribusi per kecamatan
+              backgroundColor: colorPalette,
+              borderWidth: 2,
+              borderColor: "#ffffff",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "bottom" },
+            datalabels: {
+              color: "#ffffff", // Warna teks persentase
+              font: {
+                weight: "bold",
+                size: 13,
+              },
+              formatter: (value, context) => {
+                // Hitung total seluruh data
+                const total = context.chart.data.datasets[0].data.reduce(
+                  (a, b) => a + b,
+                  0,
+                );
+                // Hitung persentase
+                const percentage = ((value / total) * 100).toFixed(1) + "%";
+                return percentage; // Tampilkan hasil persentase
+              },
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  return ` ${context.label}: ${context.raw}% Total Setoran`;
+                },
+              },
+            },
+          },
+        },
+      });
+    </script>
   </body>
 </html>

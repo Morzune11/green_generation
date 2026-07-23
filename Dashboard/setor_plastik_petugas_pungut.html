@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Petugas Pungut - ClassApp</title>
+    <!-- Google Font 'Inter' -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      :root {
+        --primary-color: #16a34a;
+        --primary-hover: #15803d;
+        --primary-light: #f0fdf4;
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-dark: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+        --danger-color: #ef4444;
+        --danger-light: #fef2f2;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-dark);
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* --- SIDEBAR --- */
+      .sidebar {
+        width: 260px;
+        background-color: var(--card-bg);
+        border-right: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 2rem 1.5rem;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+      }
+
+      .brand {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .role-badge {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-left: auto;
+      }
+
+      .nav-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .nav-item a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+      }
+
+      .nav-item a:hover,
+      .nav-item.active a {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+
+      /* --- MAIN CONTENT --- */
+      .main-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 2rem 2.5rem;
+        max-width: 800px;
+      }
+
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+
+      .page-title-area h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .page-title-area p {
+        color: var(--text-muted);
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+      }
+
+      /* --- FORM CARD --- */
+      .form-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        padding: 2rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+
+      .form-group label.field-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-bottom: 0.4rem;
+      }
+
+      .form-group input[type="number"],
+      .form-group input[type="text"] {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1.5px solid var(--border-color);
+        border-radius: 8px;
+        background-color: var(--bg-color);
+        font-size: 0.95rem;
+        outline: none;
+        transition: all 0.2s ease;
+      }
+
+      .form-group input:focus {
+        border-color: var(--primary-color);
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+      }
+
+      .radio-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        margin-top: 0.4rem;
+      }
+
+      .radio-card {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+        border: 1.5px solid var(--border-color);
+        border-radius: 8px;
+        background-color: var(--bg-color);
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .radio-card:hover {
+        border-color: var(--primary-color);
+        background-color: var(--primary-light);
+      }
+
+      .radio-card input[type="radio"] {
+        accent-color: var(--primary-color);
+        width: 16px;
+        height: 16px;
+      }
+
+      .btn-submit {
+        width: 100%;
+        padding: 0.85rem;
+        background-color: var(--primary-color);
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 1rem;
+        transition: background-color 0.2s ease;
+      }
+
+      .btn-submit:hover {
+        background-color: var(--primary-hover);
+      }
+
+      /* --- MODAL KONFIRMASI --- */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background-color: rgba(15, 23, 42, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        padding: 1rem;
+      }
+
+      .modal-overlay.active {
+        display: flex;
+      }
+
+      .modal-box {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        max-width: 480px;
+        width: 100%;
+        padding: 2rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+
+      .modal-header h3 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+      }
+
+      .modal-header p {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 1.25rem;
+      }
+
+      .confirmation-list {
+        background-color: var(--primary-light);
+        border: 1px solid #bbf7d0;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        font-size: 0.875rem;
+      }
+
+      .confirm-item {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .confirm-label {
+        color: var(--text-muted);
+      }
+
+      .confirm-val {
+        font-weight: 700;
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+      }
+
+      .btn-confirm-save {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.65rem 1.25rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn-cancel {
+        background-color: transparent;
+        color: var(--text-muted);
+        border: 1.5px solid var(--border-color);
+        padding: 0.65rem 1.25rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+        .main-content {
+          margin-left: 0;
+          padding: 1.5rem 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Sidebar -->
+    <aside class="sidebar">
+      <div>
+        <a href="#" class="brand">
+          <span>🌿</span>
+          <span>ClassApp</span>
+          <span class="role-badge">Petugas</span>
+        </a>
+        <ul class="nav-list">
+          <li class="nav-item active">
+            <a href="setor_plastik_petugas_pungut.html">
+              <span>📝</span>
+              <span>Setor Plastik</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="laporan_petugas_pungut.html">
+              <span>📑</span>
+              <span>Laporan Hasil Pemungutan</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="../Login/petugas_pungut.html" class="logout-link">
+            <span
+              ><img
+                src="../Icons/logout.png"
+                alt="logout"
+                srcset=""
+                width="15px"
+            /></span>
+            <span>Keluar</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-bar">
+        <div class="page-title-area">
+          <h1>Form Petugas Pungut</h1>
+          <p>Input data penimbangan sampah plastik dari sekolah mitra.</p>
+        </div>
+      </header>
+
+      <div class="form-card">
+        <form id="pungutForm" onsubmit="showConfirmation(event)">
+          <!-- ID Sekolah (int) -->
+          <div class="form-group">
+            <label for="id_sekolah" class="field-label">ID Sekolah</label>
+            <input type="number" id="id_sekolah" placeholder="" required />
+          </div>
+
+          <!-- Nama Sekolah (str) -->
+          <div class="form-group">
+            <label for="nama_sekolah" class="field-label">Nama Sekolah</label>
+            <input
+              type="text"
+              id="nama_sekolah"
+              placeholder="Contoh: SMAN 1 Madiun"
+              required
+            />
+          </div>
+
+          <!-- Jenis Plastik (Radio) -->
+          <div class="form-group">
+            <label class="field-label">Jenis Plastik</label>
+            <div class="radio-options">
+              <label class="radio-card">
+                <input
+                  type="radio"
+                  name="jenis_plastik"
+                  value="Botol PET"
+                  checked
+                />
+                <span>Botol PET</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="jenis_plastik" value="Gelas PP" />
+                <span>Gelas PP</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="jenis_plastik" value="Plastik HDPE" />
+                <span>HDPE</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="jenis_plastik" value="Campuran" />
+                <span>Campuran</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Jumlah Berat (int) -->
+          <div class="form-group">
+            <label for="jumlah_berat" class="field-label"
+              >Jumlah Berat / Kg</label
+            >
+            <input
+              type="number"
+              id="jumlah_berat"
+              placeholder="Contoh: 45"
+              min="1"
+              required
+            />
+          </div>
+
+          <!-- Tombol Submit -->
+          <button type="submit" class="btn-submit">
+            Submit Data Pemungutan
+          </button>
+        </form>
+      </div>
+    </main>
+
+    <!-- Modal Konfirmasi -->
+    <div class="modal-overlay" id="confirmModal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>🔍 Konfirmasi Data Pemungutan</h3>
+          <p>Periksa detail data sebelum disimpan.</p>
+        </div>
+
+        <div class="confirmation-list">
+          <div class="confirm-item">
+            <span class="confirm-label">ID Sekolah:</span>
+            <span class="confirm-val" id="modalIdSekolah">-</span>
+          </div>
+          <div class="confirm-item">
+            <span class="confirm-label">Nama Sekolah:</span>
+            <span class="confirm-val" id="modalNamaSekolah">-</span>
+          </div>
+          <div class="confirm-item">
+            <span class="confirm-label">Jenis Plastik:</span>
+            <span class="confirm-val" id="modalJenisPlastik">-</span>
+          </div>
+          <div class="confirm-item">
+            <span class="confirm-label">Jumlah Berat:</span>
+            <span class="confirm-val" id="modalJumlahBerat">-</span>
+          </div>
+          <div
+            class="confirm-item"
+            style="
+              border-top: 1px dashed #bbf7d0;
+              padding-top: 0.4rem;
+              margin-top: 0.2rem;
+            "
+          >
+            <span class="confirm-label">Waktu System:</span>
+            <span
+              class="confirm-val"
+              id="modalTimestamp"
+              style="color: var(--primary-color)"
+              >-</span
+            >
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="btn-cancel"
+            onclick="closeConfirmation()"
+          >
+            Batal
+          </button>
+          <button type="button" class="btn-confirm-save" onclick="saveData()">
+            Ya, Konfirmasi & Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentInputData = {};
+
+      function getFormattedTimestamp() {
+        const now = new Date();
+        const date = String(now.getDate()).padStart(2, "0");
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const year = now.getFullYear();
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        const seconds = String(now.getSeconds()).padStart(2, "0");
+        return `${date}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+      }
+
+      function showConfirmation(event) {
+        event.preventDefault();
+
+        const idSekolah = document.getElementById("id_sekolah").value;
+        const namaSekolah = document.getElementById("nama_sekolah").value;
+        const jenisPlastik = document.querySelector(
+          'input[name="jenis_plastik"]:checked',
+        ).value;
+        const jumlahBerat = document.getElementById("jumlah_berat").value;
+        const timestamp = getFormattedTimestamp();
+
+        currentInputData = {
+          idSekolah,
+          namaSekolah,
+          jenisPlastik,
+          jumlahBerat,
+          timestamp,
+        };
+
+        document.getElementById("modalIdSekolah").textContent = "#" + idSekolah;
+        document.getElementById("modalNamaSekolah").textContent = namaSekolah;
+        document.getElementById("modalJenisPlastik").textContent = jenisPlastik;
+        document.getElementById("modalJumlahBerat").textContent =
+          jumlahBerat + " Kg";
+        document.getElementById("modalTimestamp").textContent = timestamp;
+
+        document.getElementById("confirmModal").classList.add("active");
+      }
+
+      function closeConfirmation() {
+        document.getElementById("confirmModal").classList.remove("active");
+      }
+
+      function saveData() {
+        // Mengambil data lama dari LocalStorage (atau inisialisasi array baru)
+        let existingReports = JSON.parse(
+          localStorage.getItem("laporan_pungut"),
+        ) || [
+          {
+            idSekolah: "2026001",
+            namaSekolah: "SMAN 1 Madiun",
+            jenisPlastik: "Botol PET",
+            jumlahBerat: "50",
+            timestamp: "23/07/2026 09:15:22",
+          },
+          {
+            idSekolah: "2026002",
+            namaSekolah: "SMAN 2 Madiun",
+            jenisPlastik: "Gelas PP",
+            jumlahBerat: "32",
+            timestamp: "23/07/2026 10:40:05",
+          },
+        ];
+
+        // Tambahkan data baru ke urutan teratas
+        existingReports.unshift(currentInputData);
+
+        // Simpan kembali ke LocalStorage
+        localStorage.setItem("laporan_pungut", JSON.stringify(existingReports));
+
+        // Pindah halaman secara otomatis ke Laporan
+        window.location.href = "laporan-pungut.html";
+      }
+    </script>
+  </body>
+</html>
