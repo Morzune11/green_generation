@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Profil - ClassApp</title>
+    <title>Profil Siswa - ClassApp</title>
     <!-- Google Font 'Inter' -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
@@ -63,6 +63,16 @@
         margin-bottom: 2.5rem;
       }
 
+      .role-badge {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-left: auto;
+      }
+
       .nav-list {
         list-style: none;
         display: flex;
@@ -105,7 +115,6 @@
         padding: 2rem 2.5rem;
       }
 
-      /* Top Bar Header */
       .top-bar {
         display: flex;
         justify-content: space-between;
@@ -116,7 +125,6 @@
       .page-title-area h1 {
         font-size: 1.5rem;
         font-weight: 700;
-        color: var(--text-dark);
       }
 
       .page-title-area p {
@@ -125,100 +133,115 @@
         margin-top: 0.25rem;
       }
 
-      .user-profile {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        background: var(--card-bg);
-        padding: 0.5rem 1rem;
-        border-radius: 30px;
-        border: 1px solid var(--border-color);
-      }
-
-      .avatar {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background-color: var(--primary-color);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
-        font-size: 0.875rem;
-      }
-
-      .user-name {
-        font-size: 0.875rem;
-        font-weight: 600;
-      }
-
-      .user-class {
-        font-size: 0.75rem;
-        color: var(--text-muted);
-      }
-
-      /* --- CARD EDIT PROFIL --- */
-      .profile-card {
-        background-color: var(--card-bg);
-        border-radius: 12px;
-        border: 1px solid var(--border-color);
-        padding: 2rem;
-        max-width: 700px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-      }
-
-      /* Foto/Avatar Header Section */
-      .avatar-upload-section {
-        display: flex;
-        align-items: center;
+      /* --- PROFILE LAYOUT --- */
+      .profile-layout {
+        display: grid;
+        grid-template-columns: 280px 1fr;
         gap: 1.5rem;
-        padding-bottom: 1.5rem;
-        margin-bottom: 1.5rem;
-        border-bottom: 1px solid var(--border-color);
+        align-items: start;
       }
 
-      .large-avatar {
-        width: 80px;
-        height: 80px;
+      /* Avatar Card */
+      .avatar-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+
+      .avatar-wrapper {
+        position: relative;
+        width: 110px;
+        height: 110px;
+        margin: 0 auto 1.25rem;
+      }
+
+      .avatar-img {
+        width: 100%;
+        height: 100%;
         border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--primary-light);
         background-color: var(--primary-color);
-        color: white;
+        color: #ffffff;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.75rem;
+        font-size: 2.25rem;
         font-weight: 700;
       }
 
-      .avatar-action p {
-        font-size: 0.875rem;
-        color: var(--text-muted);
-        margin-top: 0.25rem;
+      .btn-upload-avatar {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-color: var(--primary-color);
+        color: #fff;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 2px solid #fff;
+        font-size: 0.85rem;
       }
 
-      .btn-upload {
+      .avatar-card h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+
+      .avatar-card .user-role {
         display: inline-block;
-        margin-top: 0.5rem;
-        padding: 0.4rem 0.85rem;
+        margin-top: 0.3rem;
         font-size: 0.8rem;
-        font-weight: 600;
         color: var(--primary-color);
         background-color: var(--primary-light);
-        border: 1px solid #bbf7d0;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.2s ease;
+        padding: 0.2rem 0.6rem;
+        border-radius: 20px;
+        font-weight: 600;
       }
 
-      .btn-upload:hover {
-        background-color: #dcfce7;
+      .avatar-card .user-id {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: 0.5rem;
       }
 
-      /* --- FORM STYLING --- */
+      /* Form Cards */
+      .form-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.75rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        margin-bottom: 1.5rem;
+      }
+
+      .form-card-header {
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.85rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .form-card-header h2 {
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+
+      .form-card-header p {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: 0.15rem;
+      }
+
       .form-grid {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 1.25rem;
       }
 
@@ -228,32 +251,36 @@
         gap: 0.4rem;
       }
 
+      .form-group.full-width {
+        grid-column: span 2;
+      }
+
       .form-group label {
-        font-size: 0.875rem;
+        font-size: 0.85rem;
         font-weight: 600;
         color: var(--text-dark);
       }
 
-      .form-group input {
+      .form-control {
         width: 100%;
-        padding: 0.75rem 1rem;
-        border: 1.5px solid var(--border-color);
+        padding: 0.65rem 0.85rem;
+        border: 1px solid var(--border-color);
         border-radius: 8px;
-        background-color: #ffffff;
-        font-size: 0.95rem;
-        color: var(--text-dark);
+        font-size: 0.875rem;
         outline: none;
-        transition: all 0.2s ease;
+        transition: border-color 0.2s;
+        background-color: #ffffff;
+        color: var(--text-dark);
       }
 
-      .form-group input:focus {
+      .form-control:focus {
         border-color: var(--primary-color);
-        box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
       }
 
-      /* Disabled Field (Untuk data yang tidak boleh diubah) */
-      .form-group input:disabled {
-        background-color: #f1f5f9;
+      .form-control[readonly],
+      .form-control[disabled] {
+        background-color: var(--bg-color);
         color: var(--text-muted);
         cursor: not-allowed;
         border-color: var(--border-color);
@@ -262,49 +289,47 @@
       .input-hint {
         font-size: 0.75rem;
         color: var(--text-muted);
+        margin-top: 0.2rem;
       }
 
-      /* Form Action Buttons */
       .form-actions {
         display: flex;
         justify-content: flex-end;
-        gap: 1rem;
-        margin-top: 1.5rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid var(--border-color);
+        gap: 0.75rem;
+        margin-top: 1rem;
       }
 
-      .btn-save {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 0.75rem 1.5rem;
+      .btn {
+        padding: 0.65rem 1.25rem;
         border-radius: 8px;
+        font-size: 0.875rem;
         font-weight: 600;
-        font-size: 0.9rem;
         cursor: pointer;
-        transition: background 0.2s ease;
+        border: 1px solid transparent;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
 
-      .btn-save:hover {
+      .btn-primary {
+        background-color: var(--primary-color);
+        color: #ffffff;
+      }
+
+      .btn-primary:hover {
         background-color: var(--primary-hover);
       }
 
-      .btn-cancel {
-        background-color: transparent;
-        color: var(--text-muted);
-        border: 1.5px solid var(--border-color);
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        text-decoration: none;
-        transition: all 0.2s ease;
+      .btn-secondary {
+        background-color: var(--bg-color);
+        border-color: var(--border-color);
+        color: var(--text-dark);
       }
 
-      .btn-cancel:hover {
-        background-color: #f1f5f9;
-        color: var(--text-dark);
+      .btn-secondary:hover {
+        background-color: var(--border-color);
       }
 
       /* Responsif */
@@ -315,11 +340,15 @@
           align-items: center;
         }
         .brand span,
-        .nav-item span {
+        .nav-item span,
+        .role-badge {
           display: none;
         }
         .main-content {
           margin-left: 80px;
+        }
+        .profile-layout {
+          grid-template-columns: 1fr;
         }
       }
 
@@ -331,18 +360,11 @@
           margin-left: 0;
           padding: 1.5rem 1rem;
         }
-        .avatar-upload-section {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 1rem;
+        .form-grid {
+          grid-template-columns: 1fr;
         }
-        .form-actions {
-          flex-direction: column-reverse;
-        }
-        .btn-save,
-        .btn-cancel {
-          width: 100%;
-          text-align: center;
+        .form-group.full-width {
+          grid-column: span 1;
         }
       }
     </style>
@@ -354,6 +376,7 @@
         <a href="dashboard.html" class="brand">
           <span>🌿</span>
           <span>ClassApp</span>
+          <span class="role-badge">Siswa</span>
         </a>
         <ul class="nav-list">
           <li class="nav-item">
@@ -362,11 +385,16 @@
               <span>Laporan Siswa</span>
             </a>
           </li>
-          <!-- Navigasi Pengaturan / Edit Profil Aktif -->
           <li class="nav-item active">
             <a href="profile_siswa.html">
-              <span>⚙️</span>
-              <span>Pengaturan Profil</span>
+              <span
+                ><img
+                  src="../Icons/office-material.png"
+                  alt="edit"
+                  srcset=""
+                  width="15px"
+              /></span>
+              <span>Edit Profil</span>
             </a>
           </li>
         </ul>
@@ -375,11 +403,7 @@
         <li class="nav-item">
           <a href="../Login/siswa.html" class="logout-link">
             <span
-              ><img
-                src="../Icons/logout.png"
-                alt="logout"
-                srcset=""
-                width="15px"
+              ><img src="../Icons/logout.png" alt="logout" width="15px"
             /></span>
             <span>Keluar</span>
           </a>
@@ -389,75 +413,186 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-      <!-- Top Bar Header -->
       <header class="top-bar">
         <div class="page-title-area">
-          <h1>Pengaturan Profil</h1>
-          <p>Perbarui informasi akun dan identitas Anda.</p>
+          <h1>Pengaturan Profil Siswa</h1>
+          <p>
+            Kelola data identitas akun, informasi tabungan, dan keamanan Anda.
+          </p>
         </div>
       </header>
 
-      <!-- Card Edit Profil -->
-      <div class="profile-card">
-        <!-- Section Foto Profil -->
-        <div class="avatar-upload-section">
-          <div class="large-avatar">BS</div>
-          <div class="avatar-action">
-            <h3>Foto Profil</h3>
-            <p>Format yang didukung: JPG, PNG (Maks. 2MB)</p>
-            <label class="btn-upload">
-              Unggah Foto Baru
-              <input type="file" accept="image/*" style="display: none" />
-            </label>
+      <div class="profile-layout">
+        <!-- Left Column: Avatar Card -->
+        <div class="avatar-card">
+          <div class="avatar-wrapper">
+            <!-- Avatar Inisial Nama -->
+            <div class="avatar-img">BS</div>
+            <label
+              for="upload-avatar"
+              class="btn-upload-avatar"
+              title="Ubah Foto"
+              >📷</label
+            >
+            <input type="file" id="upload-avatar" hidden accept="image/*" />
           </div>
+          <h3>Budi Santoso</h3>
+          <span class="user-role">Siswa</span>
+          <p class="user-id">NISN: 0051234567</p>
         </div>
 
-        <!-- Form Ubah Nama & Kelas -->
-        <form action="#" method="POST">
-          <div class="form-grid">
-            <!-- Field 1: Nama Lengkap (Dapat Diubah) -->
-            <div class="form-group">
-              <label for="nama">Nama Lengkap</label>
-              <input
-                type="text"
-                id="nama"
-                name="nama"
-                value="Budi Santoso"
-                placeholder="Masukkan nama lengkap"
-                required
-              />
+        <!-- Right Column: Form Sections -->
+        <div>
+          <!-- Card 1: Informasi Personal Siswa -->
+          <div class="form-card">
+            <div class="form-card-header">
+              <h2>Informasi Siswa</h2>
+              <p>Data identitas utama dan rekening tabungan siswa.</p>
             </div>
+            <form
+              action="#"
+              method="POST"
+              onsubmit="
+                event.preventDefault();
+                alert('Profil siswa berhasil diperbarui!');
+              "
+            >
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="nama">Nama Lengkap</label>
+                  <input
+                    type="text"
+                    id="nama"
+                    name="nama"
+                    class="form-control"
+                    value="Budi Santoso"
+                    placeholder="Masukkan nama lengkap"
+                    required
+                  />
+                </div>
 
-            <!-- Field 2: Kelas (Dapat Diubah) -->
-            <div class="form-group">
-              <label for="kelas">Kelas</label>
-              <input
-                type="text"
-                id="kelas"
-                name="kelas"
-                value="XII IPA 1"
-                placeholder="Contoh: XII IPA 1 / TI-2B"
-                required
-              />
-            </div>
+                <div class="form-group">
+                  <label for="kelas">Kelas</label>
+                  <input
+                    type="text"
+                    id="kelas"
+                    name="kelas"
+                    class="form-control"
+                    value="XII IPA 1"
+                    placeholder="Contoh: XII IPA 1"
+                    required
+                  />
+                </div>
 
-            <!-- Field Read-Only: Nomor Rekening (Keamanan Data) -->
-            <div class="form-group">
-              <label for="no_rekening">Nomor Rekening</label>
-              <input type="text" id="no_rekening" value="1234567890" disabled />
-              <span class="input-hint"
-                >Nomor rekening terikat dengan akun dan tidak dapat diubah
-                secara mandiri.</span
-              >
-            </div>
+                <div class="form-group">
+                  <label for="nisn">NISN / ID Siswa</label>
+                  <input
+                    type="text"
+                    id="nisn"
+                    class="form-control"
+                    value="0051234567"
+                    readonly
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="no_rekening">Nomor Rekening Tabungan</label>
+                  <input
+                    type="text"
+                    id="no_rekening"
+                    class="form-control"
+                    value="1234567890"
+                    disabled
+                  />
+                  <span class="input-hint"
+                    >Nomor rekening terikat akun dan tidak dapat diubah secara
+                    mandiri.</span
+                  >
+                </div>
+
+                <div class="form-group">
+                  <label for="telepon">No. HP / WhatsApp (Ortu/Siswa)</label>
+                  <input
+                    type="tel"
+                    id="telepon"
+                    class="form-control"
+                    value="081298765432"
+                    placeholder="08xxxxxxxxxx"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="email">Email Siswa</label>
+                  <input
+                    type="email"
+                    id="email"
+                    class="form-control"
+                    value="budi.santoso@siswa.sch.id"
+                    placeholder="nama@email.com"
+                  />
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <a href="profile_siswa.html" class="btn btn-secondary">Batal</a>
+                <button type="submit" class="btn btn-primary">
+                  💾 Simpan Perubahan
+                </button>
+              </div>
+            </form>
           </div>
 
-          <!-- Tombol Aksi Simpan / Batal -->
-          <div class="form-actions">
-            <a href="profile_siswa.html" class="btn-cancel">Batal</a>
-            <button type="submit" class="btn-save">💾 Simpan Perubahan</button>
+          <!-- Card 2: Keamanan Akun -->
+          <div class="form-card">
+            <div class="form-card-header">
+              <h2>Keamanan Akun</h2>
+              <p>Perbarui kata sandi untuk menjaga keamanan akun Anda.</p>
+            </div>
+            <form
+              onsubmit="
+                event.preventDefault();
+                alert('Kata sandi berhasil diperbarui!');
+              "
+            >
+              <div class="form-grid">
+                <div class="form-group full-width">
+                  <label for="current_password">Kata Sandi Saat Ini</label>
+                  <input
+                    type="password"
+                    id="current_password"
+                    class="form-control"
+                    placeholder="••••••••"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="new_password">Kata Sandi Baru</label>
+                  <input
+                    type="password"
+                    id="new_password"
+                    class="form-control"
+                    placeholder="Minimal 8 karakter"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="confirm_password"
+                    >Konfirmasi Kata Sandi Baru</label
+                  >
+                  <input
+                    type="password"
+                    id="confirm_password"
+                    class="form-control"
+                    placeholder="Ulangi kata sandi baru"
+                  />
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                  Update Password
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </main>
   </body>
