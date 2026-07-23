@@ -1,3 +1,5 @@
+**MOCKUP WEBSITE**
+
 # 🌿 Green Generation- Sistem Pengelolaan Bank Sampah & Tabungan Sekolah
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
@@ -5,7 +7,7 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-**ClassApp** adalah platform antarmuka web modern berbasis ekosistem *Eco-Education* yang dirancang untuk mengelola penyetoran sampah plastik dan konversinya menjadi tabungan siswa di lingkungan sekolah secara efisien, transparan, dan terintegrasi.
+**Green Generation** adalah platform antarmuka web modern berbasis ekosistem *Eco-Education* yang dirancang untuk mengelola penyetoran sampah plastik dan konversinya menjadi tabungan siswa di lingkungan sekolah secara efisien, transparan, dan terintegrasi.
 
 ---
 
