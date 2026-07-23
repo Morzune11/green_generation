@@ -139,6 +139,10 @@
         cursor: pointer;
         transition: background-color 0.2s ease;
         margin-top: 0.5rem;
+        display: block;
+        /* width: 100%; */
+        text-align: center;
+        text-decoration: none;
       }
 
       .btn-submit:hover {
@@ -202,39 +206,41 @@
           <p>Silakan isi formulir di bawah ini untuk mendaftar.</p>
         </div>
 
-        <form action="../Login/petugas_pungut.html" method="post">
-          <!-- Field 1: Nama -->
-          <div class="form-group">
-            <label for="username">Username </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Masukkan username"
-              required
-            />
-          </div>
+        <!-- <form action="../Login/petugas_pungut.html" method="post"> -->
+        <!-- Field 1: Nama -->
+        <div class="form-group">
+          <label for="username">Username </label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Masukkan username"
+            required
+          />
+        </div>
 
-          <!-- Field 3: Password -->
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required />
-          </div>
+        <!-- Field 3: Password -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+        </div>
 
-          <!-- Field 4: Konfirmasi Password -->
-          <div class="form-group">
-            <label for="confirm_password">Konfirmasi Password</label>
-            <input
-              type="password"
-              id="confirm_password"
-              name="confirm_password"
-              required
-            />
-          </div>
+        <!-- Field 4: Konfirmasi Password -->
+        <div class="form-group">
+          <label for="confirm_password">Konfirmasi Password</label>
+          <input
+            type="password"
+            id="confirm_password"
+            name="confirm_password"
+            required
+          />
+        </div>
 
-          <!-- Tombol Submit -->
-          <button type="submit" class="btn-submit">Daftar Sekarang</button>
-        </form>
+        <!-- Tombol Submit -->
+        <a href="../Login/petugas_pungut.html" class="btn-submit"
+          >Daftar Sekarang</a
+        >
+        <!-- </form> -->
 
         <div class="form-footer">
           Sudah memiliki akun?

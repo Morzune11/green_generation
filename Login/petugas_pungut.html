@@ -192,6 +192,11 @@
         font-weight: 600;
         cursor: pointer;
         transition: background-color 0.2s ease;
+        margin-top: 0.5rem;
+        display: block;
+        /* width: 100%; */
+        text-align: center;
+        text-decoration: none;
       }
 
       .btn-submit:hover {
@@ -241,43 +246,43 @@
           <p>Masukkan username dan password Anda untuk masuk.</p>
         </div>
 
-        <form action="#" method="POST">
-          <!-- Field 1: No Rekening -->
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Masukkan username"
-              required
-            />
-          </div>
+        <!-- <form action="#" method="POST"> -->
+        <!-- Field 1: No Rekening -->
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Masukkan username"
+            required
+          />
+        </div>
 
-          <!-- Field 2: Password -->
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder=""
-              required
-            />
-          </div>
+        <!-- Field 2: Password -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder=""
+            required
+          />
+        </div>
 
-          <!-- Fitur UX Login: Ingat Saya & Lupa Password -->
-          <div class="form-options">
-            <label class="remember-me">
-              <input type="checkbox" name="remember" />
-              <span>Ingat Saya</span>
-            </label>
-            <a href="#" class="forgot-password">Lupa Password?</a>
-          </div>
+        <!-- Fitur UX Login: Ingat Saya & Lupa Password -->
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox" name="remember" />
+            <span>Ingat Saya</span>
+          </label>
+          <a href="#" class="forgot-password">Lupa Password?</a>
+        </div>
 
-          <!-- Tombol Submit -->
-          <button type="submit" class="btn-submit">Masuk</button>
-        </form>
+        <!-- Tombol Submit -->
+        <a href="../Dashboard/" class="btn-submit">Masuk</a>
+        <!-- </form> -->
 
         <div class="form-footer">
           Belum memiliki akun?

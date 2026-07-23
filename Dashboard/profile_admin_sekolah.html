@@ -52,6 +52,16 @@
         z-index: 100;
       }
 
+      .admin-badge {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-left: auto;
+      }
+
       .brand {
         font-size: 1.35rem;
         font-weight: 700;
@@ -315,7 +325,8 @@
           align-items: center;
         }
         .brand span,
-        .nav-item span {
+        .nav-item span,
+        .admin-badge {
           display: none;
         }
         .main-content {
@@ -354,17 +365,25 @@
         <a href="dashboard.html" class="brand">
           <span>🌿</span>
           <span>ClassApp</span>
+          <span class="admin-badge">Admin</span>
         </a>
         <ul class="nav-list">
           <li class="nav-item">
-            <a href="laporan_siswa.html">
-              <span>📄</span>
-              <span>Laporan Siswa</span>
+            <a href="setor_plastik_admin_sekolah.html">
+              <span>📝</span>
+              <span>Setor Plastik</span>
+            </a>
+          </li>
+          <!-- Navigasi Aktif: Rekap Laporan Siswa -->
+          <li class="nav-item">
+            <a href="laporan_admin_sekolah.html">
+              <span>📑</span>
+              <span>Laporan Rekap Sekolah</span>
             </a>
           </li>
           <!-- Navigasi Pengaturan / Edit Profil Aktif -->
           <li class="nav-item active">
-            <a href="profile_siswa.html">
+            <a href="profile_admin_sekolah.html">
               <span>⚙️</span>
               <span>Pengaturan Profil</span>
             </a>
@@ -373,7 +392,7 @@
       </div>
       <ul class="nav-list">
         <li class="nav-item">
-          <a href="../Login/siswa.html" class="logout-link">
+          <a href="../Login/admin_sekolah.html" class="logout-link">
             <span
               ><img
                 src="../Icons/logout.png"
@@ -396,10 +415,14 @@
           <p>Perbarui informasi akun dan identitas Anda.</p>
         </div>
         <div class="user-profile">
-          <div class="avatar">BS</div>
-          <div class="user-info">
-            <span class="user-name">Budi Santoso</span>
-            <span class="user-class">Kelas: XII IPA 1</span>
+          <div class="avatar">AD</div>
+          <div style="display: flex; flex-direction: column">
+            <span style="font-size: 0.875rem; font-weight: 600"
+              >Admin Sekolah</span
+            >
+            <span style="font-size: 0.75rem; color: var(--text-muted)"
+              >SMAN 1 Madiun</span
+            >
           </div>
         </div>
       </header>
@@ -408,7 +431,7 @@
       <div class="profile-card">
         <!-- Section Foto Profil -->
         <div class="avatar-upload-section">
-          <div class="large-avatar">BS</div>
+          <div class="large-avatar">AD</div>
           <div class="avatar-action">
             <h3>Foto Profil</h3>
             <p>Format yang didukung: JPG, PNG (Maks. 2MB)</p>
@@ -429,7 +452,7 @@
                 type="text"
                 id="nama"
                 name="nama"
-                value="Budi Santoso"
+                value="Admin Sekolah"
                 placeholder="Masukkan nama lengkap"
                 required
               />
@@ -437,31 +460,24 @@
 
             <!-- Field 2: Kelas (Dapat Diubah) -->
             <div class="form-group">
-              <label for="kelas">Kelas</label>
+              <label for="sekolah">Sekolah</label>
               <input
                 type="text"
-                id="kelas"
-                name="kelas"
-                value="XII IPA 1"
-                placeholder="Contoh: XII IPA 1 / TI-2B"
-                required
+                id="sekolah"
+                name="sekolah"
+                value="SMAN 1 Madiun"
+                placeholder=""
+                disabled
               />
-            </div>
-
-            <!-- Field Read-Only: Nomor Rekening (Keamanan Data) -->
-            <div class="form-group">
-              <label for="no_rekening">Nomor Rekening</label>
-              <input type="text" id="no_rekening" value="1234567890" disabled />
               <span class="input-hint"
-                >Nomor rekening terikat dengan akun dan tidak dapat diubah
-                secara mandiri.</span
+                >Asal sekolah tidak dapat diubah secara mandiri.</span
               >
             </div>
           </div>
 
           <!-- Tombol Aksi Simpan / Batal -->
           <div class="form-actions">
-            <a href="profile_siswa.html" class="btn-cancel">Batal</a>
+            <a href="profile_admin_sekolah.html" class="btn-cancel">Batal</a>
             <button type="submit" class="btn-save">💾 Simpan Perubahan</button>
           </div>
         </form>
