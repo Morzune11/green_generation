@@ -38,6 +38,26 @@
         min-height: 100vh;
       }
 
+      /* --- OVERLAY BACKGROUND (MOBILE) --- */
+      .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(2px);
+        z-index: 99;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
       /* --- SIDEBAR NAVIGATION --- */
       .sidebar {
         width: 260px;
@@ -50,6 +70,9 @@
         position: fixed;
         height: 100vh;
         z-index: 100;
+        transition:
+          transform 0.3s ease,
+          width 0.3s ease;
       }
 
       .brand {
@@ -113,6 +136,7 @@
         margin-left: 260px;
         flex: 1;
         padding: 2rem 2.5rem;
+        transition: margin-left 0.3s ease;
       }
 
       .top-bar {
@@ -120,6 +144,31 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 2rem;
+        gap: 1rem;
+      }
+
+      .top-bar-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      /* Tombol Hamburger */
+      .menu-toggle {
+        display: none;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0.5rem 0.75rem;
+        font-size: 1.25rem;
+        cursor: pointer;
+        color: var(--text-dark);
+        transition: all 0.2s ease;
+      }
+
+      .menu-toggle:hover {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
       }
 
       .page-title-area h1 {
@@ -332,15 +381,15 @@
         background-color: var(--border-color);
       }
 
-      /* Responsif */
+      /* Responsif Tablet (Lebar max 1024px) */
       @media (max-width: 1024px) {
         .sidebar {
           width: 80px;
           padding: 1.5rem 0.75rem;
           align-items: center;
         }
-        .brand span,
-        .nav-item span,
+        .brand span:not(:first-child),
+        .nav-item span:last-child,
         .role-badge {
           display: none;
         }
@@ -352,9 +401,25 @@
         }
       }
 
-      @media (max-width: 640px) {
+      /* Responsif Handphone / Mobile (Lebar max 768px) */
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: inline-block;
+        }
         .sidebar {
-          display: none;
+          width: 260px;
+          align-items: stretch;
+          transform: translateX(-100%);
+          box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar.active {
+          transform: translateX(0);
+        }
+        /* Munculkan kembali teks label pada sidebar mobile saat terbuka */
+        .brand span:not(:first-child),
+        .nav-item span:last-child,
+        .role-badge {
+          display: inline;
         }
         .main-content {
           margin-left: 0;
@@ -370,8 +435,11 @@
     </style>
   </head>
   <body>
+    <!-- Overlay gelap saat sidebar aktif di HP -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Sidebar Navigation -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div>
         <a href="dashboard.html" class="brand">
           <span>🌿</span>
@@ -387,13 +455,13 @@
           </li>
           <li class="nav-item active">
             <a href="profile_siswa.html">
-              <span
-                ><img
+              <span>
+                <img
                   src="../Icons/office-material.png"
                   alt="edit"
-                  srcset=""
                   width="15px"
-              /></span>
+                />
+              </span>
               <span>Edit Profil</span>
             </a>
           </li>
@@ -402,9 +470,9 @@
       <ul class="nav-list">
         <li class="nav-item">
           <a href="../Login/siswa.html" class="logout-link">
-            <span
-              ><img src="../Icons/logout.png" alt="logout" width="15px"
-            /></span>
+            <span>
+              <img src="../Icons/logout.png" alt="logout" width="15px" />
+            </span>
             <span>Keluar</span>
           </a>
         </li>
@@ -414,11 +482,17 @@
     <!-- Main Content Area -->
     <main class="main-content">
       <header class="top-bar">
-        <div class="page-title-area">
-          <h1>Pengaturan Profil Siswa</h1>
-          <p>
-            Kelola data identitas akun, informasi tabungan, dan keamanan Anda.
-          </p>
+        <div class="top-bar-left">
+          <!-- Tombol Trigger Hamburger Sidebar untuk HP -->
+          <button class="menu-toggle" id="menuToggle" aria-label="Buka Menu">
+            ☰
+          </button>
+          <div class="page-title-area">
+            <h1>Pengaturan Profil Siswa</h1>
+            <p>
+              Kelola data identitas akun, informasi tabungan, dan keamanan Anda.
+            </p>
+          </div>
         </div>
       </header>
 
@@ -595,5 +669,20 @@
         </div>
       </div>
     </main>
+
+    <!-- JavaScript Interaktif Sidebar Mobile -->
+    <script>
+      const menuToggle = document.getElementById("menuToggle");
+      const sidebar = document.getElementById("sidebar");
+      const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+      function toggleSidebar() {
+        sidebar.classList.toggle("active");
+        sidebarOverlay.classList.toggle("active");
+      }
+
+      menuToggle.addEventListener("click", toggleSidebar);
+      sidebarOverlay.addEventListener("click", toggleSidebar);
+    </script>
   </body>
 </html>

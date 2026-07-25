@@ -48,6 +48,7 @@
         position: fixed;
         height: 100vh;
         z-index: 100;
+        transition: transform 0.3s ease;
       }
 
       .brand {
@@ -98,11 +99,28 @@
         font-weight: 600;
       }
 
+      /* --- OVERLAY UNTUK MOBILE --- */
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 90;
+      }
+
+      .sidebar-overlay.active {
+        display: block;
+      }
+
       /* --- MAIN CONTENT --- */
       .main-content {
         margin-left: 260px;
         flex: 1;
         padding: 2rem 2.5rem;
+        width: calc(100% - 260px);
       }
 
       .top-bar {
@@ -110,6 +128,25 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 2rem;
+      }
+
+      .page-title-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      /* Tombol Toggle Mobile */
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: 1px solid var(--border-color);
+        background-color: var(--card-bg);
+        font-size: 1.25rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 8px;
+        cursor: pointer;
+        color: var(--text-dark);
       }
 
       .page-title-area h1 {
@@ -298,17 +335,19 @@
 
       @media (max-width: 1024px) {
         .sidebar {
-          width: 80px;
-          padding: 1.5rem 0.75rem;
-          align-items: center;
+          transform: translateX(-100%);
         }
-        .brand span,
-        .nav-item span,
-        .role-badge {
-          display: none;
+        .sidebar.active {
+          transform: translateX(0);
         }
         .main-content {
-          margin-left: 80px;
+          margin-left: 0;
+          width: 100%;
+        }
+        .menu-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
         }
         .profile-layout {
           grid-template-columns: 1fr;
@@ -316,11 +355,7 @@
       }
 
       @media (max-width: 640px) {
-        .sidebar {
-          display: none;
-        }
         .main-content {
-          margin-left: 0;
           padding: 1.5rem 1rem;
         }
         .form-grid {
@@ -333,8 +368,11 @@
     </style>
   </head>
   <body>
+    <!-- Overlay untuk Sidebar Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Sidebar Navigation -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebarNav">
       <div>
         <a href="#" class="brand">
           <span>🌿</span>
@@ -386,11 +424,17 @@
     <!-- Main Content Area -->
     <main class="main-content">
       <header class="top-bar">
-        <div class="page-title-area">
-          <h1>Pengaturan Profil Petugas Pungut</h1>
-          <p>
-            Kelola identitas operasional penugasan dan kata sandi akun Anda.
-          </p>
+        <div class="page-title-wrapper">
+          <!-- Tombol Toggle Sidebar -->
+          <button class="menu-toggle" id="menuToggle" title="Buka Menu">
+            ☰
+          </button>
+          <div class="page-title-area">
+            <h1>Pengaturan Profil Petugas Pungut</h1>
+            <p>
+              Kelola identitas operasional penugasan dan kata sandi akun Anda.
+            </p>
+          </div>
         </div>
       </header>
 
@@ -534,5 +578,20 @@
         </div>
       </div>
     </main>
+
+    <script>
+      // Fungsi Toggle Sidebar untuk Mobile
+      const menuToggle = document.getElementById("menuToggle");
+      const sidebarNav = document.getElementById("sidebarNav");
+      const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+      function toggleSidebar() {
+        sidebarNav.classList.toggle("active");
+        sidebarOverlay.classList.toggle("active");
+      }
+
+      menuToggle.addEventListener("click", toggleSidebar);
+      sidebarOverlay.addEventListener("click", toggleSidebar);
+    </script>
   </body>
 </html>

@@ -48,6 +48,7 @@
         position: fixed;
         height: 100vh;
         z-index: 100;
+        transition: transform 0.3s ease;
       }
 
       .brand {
@@ -98,11 +99,28 @@
         font-weight: 600;
       }
 
+      /* --- OVERLAY UNTUK MOBILE --- */
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 90;
+      }
+
+      .sidebar-overlay.active {
+        display: block;
+      }
+
       /* --- MAIN CONTENT --- */
       .main-content {
         margin-left: 260px;
         flex: 1;
         padding: 2rem 2.5rem;
+        width: calc(100% - 260px);
       }
 
       .top-bar {
@@ -110,6 +128,27 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .page-title-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      /* Tombol Toggle Mobile */
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: 1px solid var(--border-color);
+        background-color: var(--card-bg);
+        font-size: 1.25rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 8px;
+        cursor: pointer;
+        color: var(--text-dark);
       }
 
       .page-title-area h1 {
@@ -132,6 +171,7 @@
         font-weight: 600;
         font-size: 0.875rem;
         transition: background-color 0.2s ease;
+        white-space: nowrap;
       }
 
       .btn-add-new:hover {
@@ -184,20 +224,37 @@
         display: inline-block;
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 1024px) {
         .sidebar {
-          display: none;
+          transform: translateX(-100%);
+        }
+        .sidebar.active {
+          transform: translateX(0);
         }
         .main-content {
           margin-left: 0;
+          width: 100%;
+        }
+        .menu-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-content {
           padding: 1.5rem 1rem;
         }
       }
     </style>
   </head>
   <body>
+    <!-- Overlay untuk Sidebar Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Navigation Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebarNav">
       <div>
         <a href="#" class="brand">
           <span>🌿</span>
@@ -249,12 +306,18 @@
     <!-- Main Content -->
     <main class="main-content">
       <header class="top-bar">
-        <div class="page-title-area">
-          <h1>Laporan Pemungutan Plastik</h1>
-          <p>
-            Daftar seluruh transaksi pemungutan lengkap dengan Waktu System
-            (Timestamp).
-          </p>
+        <div class="page-title-wrapper">
+          <!-- Tombol Toggle Sidebar -->
+          <button class="menu-toggle" id="menuToggle" title="Buka Menu">
+            ☰
+          </button>
+          <div class="page-title-area">
+            <h1>Laporan Pemungutan Plastik</h1>
+            <p>
+              Daftar seluruh transaksi pemungutan lengkap dengan Waktu System
+              (Timestamp).
+            </p>
+          </div>
         </div>
         <a href="setor_plastik_petugas_pungut.html" class="btn-add-new"
           >+ Tambah Input Baru</a
@@ -281,6 +344,19 @@
     </main>
 
     <script>
+      // Fungsi Toggle Sidebar untuk Mobile
+      const menuToggle = document.getElementById("menuToggle");
+      const sidebarNav = document.getElementById("sidebarNav");
+      const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+      function toggleSidebar() {
+        sidebarNav.classList.toggle("active");
+        sidebarOverlay.classList.toggle("active");
+      }
+
+      menuToggle.addEventListener("click", toggleSidebar);
+      sidebarOverlay.addEventListener("click", toggleSidebar);
+
       function loadReports() {
         // Ambil data dari LocalStorage
         let reports = JSON.parse(localStorage.getItem("laporan_pungut"));
@@ -313,14 +389,14 @@
         reports.forEach((item) => {
           const row = document.createElement("tr");
           row.innerHTML = `
-                    <td>
-                        <strong>#${item.idSekolah}</strong><br>
-                        <span style="color: var(--text-muted);">${item.namaSekolah}</span>
-                    </td>
-                    <td>${item.jenisPlastik}</td>
-                    <td><strong>${item.jumlahBerat} Kg</strong></td>
-                    <td><span class="timestamp-badge">${item.timestamp}</span></td>
-                `;
+                <td>
+                    <strong>#${item.idSekolah}</strong><br>
+                    <span style="color: var(--text-muted);">${item.namaSekolah}</span>
+                </td>
+                <td>${item.jenisPlastik}</td>
+                <td><strong>${item.jumlahBerat} Kg</strong></td>
+                <td><span class="timestamp-badge">${item.timestamp}</span></td>
+              `;
           tableBody.appendChild(row);
         });
       }

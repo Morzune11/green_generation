@@ -50,6 +50,7 @@
         position: fixed;
         height: 100vh;
         z-index: 100;
+        transition: transform 0.3s ease;
       }
 
       .brand {
@@ -100,12 +101,29 @@
         font-weight: 600;
       }
 
+      /* --- OVERLAY UNTUK MOBILE --- */
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 90;
+      }
+
+      .sidebar-overlay.active {
+        display: block;
+      }
+
       /* --- MAIN CONTENT --- */
       .main-content {
         margin-left: 260px;
         flex: 1;
         padding: 2rem 2.5rem;
-        max-width: 800px;
+        max-width: 1050px;
+        width: calc(100% - 260px);
       }
 
       .top-bar {
@@ -113,6 +131,65 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 2rem;
+      }
+
+      .page-title-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .autocomplete-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-radius: 8px;
+        border-top: none;
+        z-index: 99;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 200px;
+        overflow-y: auto;
+        background-color: #fff;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .autocomplete-item {
+        padding: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: background-color 0.2s;
+      }
+
+      .autocomplete-item:hover {
+        background-color: #f0f0f0;
+      }
+
+      .autocomplete-item img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        border-radius: 4px;
+      }
+
+      /* Tombol Toggle Mobile */
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: 1px solid var(--border-color);
+        background-color: var(--card-bg);
+        font-size: 1.25rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 8px;
+        cursor: pointer;
+        color: var(--text-dark);
       }
 
       .page-title-area h1 {
@@ -124,6 +201,39 @@
         color: var(--text-muted);
         font-size: 0.875rem;
         margin-top: 0.25rem;
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: var(--card-bg);
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+        border: 1px solid var(--border-color);
+      }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.875rem;
+      }
+
+      .user-name {
+        font-size: 0.875rem;
+        font-weight: 600;
+      }
+
+      .user-class {
+        font-size: 0.75rem;
+        color: var(--text-muted);
       }
 
       /* --- FORM CARD --- */
@@ -162,6 +272,55 @@
         border-color: var(--primary-color);
         background-color: #ffffff;
         box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+      }
+
+      /* --- SELECT DROPDOWN STYLING --- */
+      .select-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      .form-select {
+        width: 100%;
+        padding: 0.65rem 2.5rem 0.65rem 0.85rem;
+        font-size: 0.875rem;
+        font-family: "Inter", sans-serif;
+        color: #0f172a;
+        background-color: #ffffff;
+        border: 1.5px solid #e2e8f0; /* --border-color */
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        /* Hilangkan panah default browser */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+
+        /* Tambahkan panah kustom modern (SVG) */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.85rem center;
+        background-size: 1.1rem;
+      }
+
+      /* Hover State */
+      .form-select:hover {
+        border-color: #cbd5e1;
+      }
+
+      /* Focus State (Saat Diklik/Aktif) */
+      .form-select:focus {
+        outline: none;
+        border-color: #16a34a; /* --primary-color */
+        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+      }
+
+      /* Disabled State */
+      .form-select:disabled {
+        background-color: #f8fafc;
+        cursor: not-allowed;
+        opacity: 0.7;
       }
 
       .radio-options {
@@ -302,20 +461,41 @@
         cursor: pointer;
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 1024px) {
         .sidebar {
-          display: none;
+          transform: translateX(-100%);
+        }
+        .sidebar.active {
+          transform: translateX(0);
         }
         .main-content {
           margin-left: 0;
+          width: 100%;
+          max-width: 100%;
+        }
+        .menu-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .main-content {
           padding: 1.5rem 1rem;
+        }
+        .radio-options {
+          grid-template-columns: 1fr;
         }
       }
     </style>
   </head>
   <body>
+    <!-- Overlay untuk Sidebar Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Navigation Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebarNav">
       <div>
         <a href="#" class="brand">
           <span>🌿</span>
@@ -367,9 +547,22 @@
     <!-- Main Content -->
     <main class="main-content">
       <header class="top-bar">
-        <div class="page-title-area">
-          <h1>Form Petugas Pungut</h1>
-          <p>Input data penimbangan sampah plastik dari sekolah mitra.</p>
+        <div class="page-title-wrapper">
+          <!-- Tombol Toggle Sidebar -->
+          <button class="menu-toggle" id="menuToggle" title="Buka Menu">
+            ☰
+          </button>
+          <div class="page-title-area">
+            <h1>Form Petugas Pungut</h1>
+            <p>Input data penimbangan sampah plastik dari sekolah mitra.</p>
+          </div>
+        </div>
+        <div class="user-profile">
+          <div class="avatar">BS</div>
+          <div class="user-info">
+            <span class="user-name">Bambang Suprapto</span>
+            <span class="user-class">Petugas</span>
+          </div>
         </div>
       </header>
 
@@ -378,45 +571,48 @@
           <!-- ID Sekolah (int) -->
           <div class="form-group">
             <label for="id_sekolah" class="field-label">ID Sekolah</label>
-            <input type="number" id="id_sekolah" placeholder="" required />
+            <input
+              type="number"
+              id="id_sekolah"
+              placeholder=""
+              required
+              readonly
+            />
           </div>
 
           <!-- Nama Sekolah (str) -->
           <div class="form-group">
             <label for="nama_sekolah" class="field-label">Nama Sekolah</label>
-            <input
-              type="text"
-              id="nama_sekolah"
-              placeholder="Contoh: SMAN 1 Madiun"
-              required
-            />
+            <div class="autocomplete-wrapper">
+              <input
+                type="text"
+                id="nama_sekolah"
+                placeholder="Contoh: SMAN 1 Madiun"
+                required
+              />
+              <!-- Container untuk daftar hasil pencarian -->
+              <div id="sekolah_list" class="autocomplete-items"></div>
+            </div>
           </div>
 
-          <!-- Jenis Plastik (Radio) -->
+          <!-- Jenis Plastik (Dropdown) -->
           <div class="form-group">
-            <label class="field-label">Jenis Plastik</label>
-            <div class="radio-options">
-              <label class="radio-card">
-                <input
-                  type="radio"
-                  name="jenis_plastik"
-                  value="Botol PET"
-                  checked
-                />
-                <span>Botol PET</span>
-              </label>
-              <label class="radio-card">
-                <input type="radio" name="jenis_plastik" value="Gelas PP" />
-                <span>Gelas PP</span>
-              </label>
-              <label class="radio-card">
-                <input type="radio" name="jenis_plastik" value="Plastik HDPE" />
-                <span>HDPE</span>
-              </label>
-              <label class="radio-card">
-                <input type="radio" name="jenis_plastik" value="Campuran" />
-                <span>Campuran</span>
-              </label>
+            <label for="jenis_plastik" class="field-label">Jenis Plastik</label>
+            <div class="select-wrapper">
+              <select
+                id="jenis_plastik"
+                name="jenis_plastik"
+                class="form-select"
+                required
+              >
+                <option value="" disabled hidden>
+                  -- Pilih Jenis Plastik --
+                </option>
+                <option value="Botol PET" selected>Botol PET</option>
+                <option value="Gelas PP">Gelas PP</option>
+                <option value="Plastik HDPE">HDPE</option>
+                <option value="Campuran">Campuran</option>
+              </select>
             </div>
           </div>
 
@@ -501,6 +697,108 @@
     </div>
 
     <script>
+      // Data daftar sekolah (bisa ditambah atau diambil dari API)
+      const dataSekolah = [
+        {
+          id: 1,
+          nama: "SMAN 1 Madiun",
+          logo: "https://via.placeholder.com/30?text=SMA1",
+        },
+        {
+          id: 2,
+          nama: "SMAN 2 Madiun",
+          logo: "https://via.placeholder.com/30?text=SMA2",
+        },
+        {
+          id: 3,
+          nama: "SMAN 3 Madiun",
+          logo: "https://via.placeholder.com/30?text=SMK1",
+        },
+        {
+          id: 4,
+          nama: "SMKN 1 Madiun",
+          logo: "https://via.placeholder.com/30?text=GARUDA",
+        },
+        {
+          id: 5,
+          nama: "SMPN 1 Madiun",
+          logo: "https://via.placeholder.com/30?text=GARUDA",
+        },
+      ];
+
+      const namaSekolah = document.getElementById("nama_sekolah");
+      const idSekolahInput = document.getElementById("id_sekolah"); // Opsional: jika ada input ID Sekolah
+      const listContainer = document.getElementById("sekolah_list");
+
+      function tampilkanSaran(keyword) {
+        const val = keyword.toLowerCase();
+        listContainer.innerHTML = ""; // Bersihkan list sebelumnya
+
+        if (!val) return;
+
+        // Filter sekolah yang cocok
+        const filtered = dataSekolah.filter((item) =>
+          item.nama.toLowerCase().includes(val),
+        );
+
+        if (filtered.length === 0) return;
+
+        // Tampilkan hasil pencarian
+        filtered.forEach((item) => {
+          const div = document.createElement("div");
+          div.classList.add("autocomplete-item");
+
+          // Elemen Logo + Nama
+          div.innerHTML = `
+      <img src="${item.logo}" alt="Logo ${item.nama}" />
+      <span>${item.nama}</span>
+    `;
+
+          // Event ketika item dipilih
+          div.addEventListener("click", function () {
+            namaSekolah.value = item.nama;
+            if (idSekolahInput) {
+              idSekolahInput.value = item.id; // Otomatis isi ID jika elemen tersedia
+            }
+            listContainer.innerHTML = ""; // Sembunyikan list setelah dipilih
+          });
+
+          listContainer.appendChild(div);
+        });
+      }
+
+      // Event saat mengetik di input
+      namaSekolah.addEventListener("input", function () {
+        tampilkanSaran(this.value);
+      });
+
+      // Event saat input diklik/fokus kembali
+      namaSekolah.addEventListener("focus", function () {
+        if (this.value) {
+          tampilkanSaran(this.value);
+        }
+      });
+
+      // Sembunyikan dropdown jika user mengklik di luar input atau list container
+      document.addEventListener("click", function (e) {
+        if (e.target !== namaSekolah && !listContainer.contains(e.target)) {
+          listContainer.innerHTML = "";
+        }
+      });
+
+      // Fungsi Toggle Sidebar untuk Mobile
+      const menuToggle = document.getElementById("menuToggle");
+      const sidebarNav = document.getElementById("sidebarNav");
+      const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+      function toggleSidebar() {
+        sidebarNav.classList.toggle("active");
+        sidebarOverlay.classList.toggle("active");
+      }
+
+      menuToggle.addEventListener("click", toggleSidebar);
+      sidebarOverlay.addEventListener("click", toggleSidebar);
+
       let currentInputData = {};
 
       function getFormattedTimestamp() {
@@ -548,7 +846,6 @@
       }
 
       function saveData() {
-        // Mengambil data lama dari LocalStorage (atau inisialisasi array baru)
         let existingReports = JSON.parse(
           localStorage.getItem("laporan_pungut"),
         ) || [
@@ -568,14 +865,9 @@
           },
         ];
 
-        // Tambahkan data baru ke urutan teratas
         existingReports.unshift(currentInputData);
-
-        // Simpan kembali ke LocalStorage
         localStorage.setItem("laporan_pungut", JSON.stringify(existingReports));
-
-        // Pindah halaman secara otomatis ke Laporan
-        window.location.href = "laporan-pungut.html";
+        window.location.href = "laporan_petugas_pungut.html";
       }
     </script>
   </body>
