@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profil Petugas Pungut - Green Generation</title>
-    <link rel="icon" href="../Icons/tea-leaf.png" type="image/png" />
+    <title>Profil Admin Sekolah - Green Generation</title>
+    <link rel="icon" href="../../Icons/tea-leaf.png" type="image/png" />
     <!-- Google Font 'Inter' -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
@@ -28,6 +28,8 @@
         --text-dark: #0f172a;
         --text-muted: #64748b;
         --border-color: #e2e8f0;
+        --danger-color: #ef4444;
+        --danger-light: #fef2f2;
       }
 
       body {
@@ -37,7 +39,7 @@
         min-height: 100vh;
       }
 
-      /* --- SIDEBAR --- */
+      /* --- SIDEBAR NAVIGATION --- */
       .sidebar {
         width: 260px;
         background-color: var(--card-bg);
@@ -63,7 +65,7 @@
         margin-bottom: 2.5rem;
       }
 
-      .role-badge {
+      .admin-badge {
         background-color: var(--primary-light);
         color: var(--primary-color);
         font-size: 0.75rem;
@@ -100,6 +102,14 @@
         font-weight: 600;
       }
 
+      .logout-link {
+        color: var(--danger-color) !important;
+      }
+
+      .logout-link:hover {
+        background-color: var(--danger-light) !important;
+      }
+
       /* --- OVERLAY UNTUK MOBILE --- */
       .sidebar-overlay {
         display: none;
@@ -116,7 +126,7 @@
         display: block;
       }
 
-      /* --- MAIN CONTENT --- */
+      /* --- MAIN CONTENT AREA --- */
       .main-content {
         margin-left: 260px;
         flex: 1;
@@ -192,6 +202,13 @@
         border-radius: 50%;
         object-fit: cover;
         border: 3px solid var(--primary-light);
+        background-color: var(--primary-color);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.25rem;
+        font-weight: 700;
       }
 
       .btn-upload-avatar {
@@ -233,7 +250,7 @@
         margin-top: 0.5rem;
       }
 
-      /* Form Card */
+      /* Form Cards */
       .form-card {
         background-color: var(--card-bg);
         border: 1px solid var(--border-color);
@@ -290,16 +307,27 @@
         font-size: 0.875rem;
         outline: none;
         transition: border-color 0.2s;
+        background-color: #ffffff;
+        color: var(--text-dark);
       }
 
       .form-control:focus {
         border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
       }
 
-      .form-control[readonly] {
+      .form-control[readonly],
+      .form-control[disabled] {
         background-color: var(--bg-color);
         color: var(--text-muted);
         cursor: not-allowed;
+        border-color: var(--border-color);
+      }
+
+      .input-hint {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-top: 0.2rem;
       }
 
       .form-actions {
@@ -317,6 +345,10 @@
         cursor: pointer;
         border: 1px solid transparent;
         transition: all 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .btn-primary {
@@ -334,6 +366,11 @@
         color: var(--text-dark);
       }
 
+      .btn-secondary:hover {
+        background-color: var(--border-color);
+      }
+
+      /* Responsif */
       @media (max-width: 1024px) {
         .sidebar {
           transform: translateX(-100%);
@@ -375,29 +412,29 @@
     <!-- Sidebar Navigation -->
     <aside class="sidebar" id="sidebarNav">
       <div>
-        <a href="#" class="brand">
+        <a href="dashboard.html" class="brand">
           <span>🌿</span>
-          <span>GreenGeneration</span>
-          <span class="role-badge">Petugas</span>
+          <span>Green Generation</span>
+          <span class="admin-badge">Admin</span>
         </a>
         <ul class="nav-list">
           <li class="nav-item">
-            <a href="setor_plastik_petugas_pungut.html">
+            <a href="setor_plastik.html">
               <span>📝</span>
               <span>Setor Plastik</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="laporan_petugas_pungut.html">
+            <a href="laporan.html">
               <span>📑</span>
-              <span>Laporan Hasil Pemungutan</span>
+              <span>Laporan Rekap Sekolah</span>
             </a>
           </li>
           <li class="nav-item active">
-            <a href="profile_petugas_pungut.html">
+            <a href="profile.html">
               <span
                 ><img
-                  src="../Icons/office-material.png"
+                  src="../../Icons/office-material.png"
                   alt="edit"
                   width="15px"
               /></span>
@@ -408,13 +445,9 @@
       </div>
       <ul class="nav-list">
         <li class="nav-item">
-          <a href="../Login/petugas_pungut.html" class="logout-link">
+          <a href="../../Login/admin_sekolah.html" class="logout-link">
             <span
-              ><img
-                src="../Icons/logout.png"
-                alt="logout"
-                srcset=""
-                width="15px"
+              ><img src="../../Icons/logout.png" alt="logout" width="15px"
             /></span>
             <span>Keluar</span>
           </a>
@@ -431,23 +464,20 @@
             ☰
           </button>
           <div class="page-title-area">
-            <h1>Pengaturan Profil Petugas Pungut</h1>
+            <h1>Pengaturan Profil Admin Sekolah</h1>
             <p>
-              Kelola identitas operasional penugasan dan kata sandi akun Anda.
+              Kelola data identitas akun, informasi sekolah, dan keamanan Anda.
             </p>
           </div>
         </div>
       </header>
 
       <div class="profile-layout">
-        <!-- Avatar Card -->
+        <!-- Left Column: Avatar Card -->
         <div class="avatar-card">
           <div class="avatar-wrapper">
-            <img
-              src="https://images.unsplash.com/photo-1610141160723-d2d346e73766?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Avatar Petugas"
-              class="avatar-img"
-            />
+            <!-- Avatar Inisial Nama -->
+            <div class="avatar-img">AS</div>
             <label
               for="upload-avatar"
               class="btn-upload-avatar"
@@ -456,86 +486,118 @@
             >
             <input type="file" id="upload-avatar" hidden accept="image/*" />
           </div>
-          <h3>Bambang Suprapto</h3>
-          <span class="user-role">Petugas Pungut</span>
-          <p class="user-id">ID: PTG-2026-004</p>
+          <h3>Admin Sekolah</h3>
+          <span class="user-role">Admin Sekolah</span>
+          <p class="user-id">NIP: 19850315 201001 2 003</p>
         </div>
 
-        <!-- Form Area -->
+        <!-- Right Column: Form Sections -->
         <div>
-          <!-- Form Informasi Personal -->
+          <!-- Card 1: Informasi Admin & Sekolah -->
           <div class="form-card">
             <div class="form-card-header">
-              <h2>Informasi Petugas Pungut</h2>
-              <p>Data identitas operasional penugasan lapangan.</p>
+              <h2>Informasi Admin & Sekolah</h2>
+              <p>Data identitas pengelola dan entitas sekolah terdaftar.</p>
             </div>
             <form
+              action="#"
+              method="POST"
               onsubmit="
                 event.preventDefault();
-                alert('Profil Petugas berhasil diperbarui!');
+                alert('Profil Admin Sekolah berhasil diperbarui!');
               "
             >
               <div class="form-grid">
                 <div class="form-group">
-                  <label>ID Petugas (Sistem)</label>
+                  <label for="nama">Nama Lengkap</label>
                   <input
                     type="text"
+                    id="nama"
+                    name="nama"
                     class="form-control"
-                    value="PTG-2026-004"
+                    value="Admin Sekolah"
+                    placeholder="Masukkan nama lengkap"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="nip">NIP / ID Pegawai</label>
+                  <input
+                    type="text"
+                    id="nip"
+                    class="form-control"
+                    value="19850315 201001 2 003"
                     readonly
                   />
                 </div>
+
                 <div class="form-group">
-                  <label>NIK / No. Identitas</label>
+                  <label for="sekolah">Nama Sekolah</label>
                   <input
                     type="text"
+                    id="sekolah"
+                    name="sekolah"
                     class="form-control"
-                    value="3519012803890001"
+                    value="SMAN 1 Madiun"
+                    disabled
+                  />
+                  <span class="input-hint"
+                    >Asal sekolah terikat dengan sistem dan tidak dapat diubah
+                    secara mandiri.</span
+                  >
+                </div>
+
+                <div class="form-group">
+                  <label for="jabatan">Jabatan / Peran</label>
+                  <input
+                    type="text"
+                    id="jabatan"
+                    class="form-control"
+                    value="Pengelola Bank Sampah Sekolah"
+                    placeholder="Contoh: Koordinator Bank Sampah"
                   />
                 </div>
+
                 <div class="form-group">
-                  <label>Nama Lengkap</label>
+                  <label for="telepon">No. HP / WhatsApp</label>
                   <input
-                    type="text"
+                    type="tel"
+                    id="telepon"
                     class="form-control"
-                    value="Bambang Suprapto"
+                    value="081334567890"
+                    placeholder="08xxxxxxxxxx"
                   />
                 </div>
+
                 <div class="form-group">
-                  <label>No. HP / WhatsApp</label>
-                  <input type="tel" class="form-control" value="081234567890" />
-                </div>
-                <div class="form-group">
-                  <label>Wilayah Zona Pungut (Kecamatan)</label>
-                  <select class="form-control">
-                    <option selected>Kec. Taman</option>
-                    <option>Kec. Kartoharjo</option>
-                    <option>Kec. Manguharjo</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Jenis & Plat Kendaraan Operasional</label>
+                  <label for="email">Email Admin / Instansi</label>
                   <input
-                    type="text"
+                    type="email"
+                    id="email"
                     class="form-control"
-                    value="Tossa / Pick-up (AE 8192 BD)"
+                    value="admin@sman1madiun.sch.id"
+                    placeholder="nama@sekolah.sch.id"
                   />
                 </div>
               </div>
+
               <div class="form-actions">
-                <button type="button" class="btn btn-secondary">Batal</button>
+                <a href="profile_admin_sekolah.html" class="btn btn-secondary"
+                  >Batal</a
+                >
                 <button type="submit" class="btn btn-primary">
-                  Simpan Perubahan
+                  💾 Simpan Perubahan
                 </button>
               </div>
             </form>
           </div>
 
-          <!-- Form Keamanan -->
+          <!-- Card 2: Keamanan Akun -->
           <div class="form-card">
             <div class="form-card-header">
               <h2>Keamanan Akun</h2>
-              <p>Perbarui kata sandi untuk menjaga keamanan akun Anda.</p>
+              <p>Perbarui kata sandi untuk menjaga keamanan akun admin Anda.</p>
             </div>
             <form
               onsubmit="
@@ -545,25 +607,30 @@
             >
               <div class="form-grid">
                 <div class="form-group full-width">
-                  <label>Kata Sandi Saat Ini</label>
+                  <label for="current_password">Kata Sandi Saat Ini</label>
                   <input
                     type="password"
+                    id="current_password"
                     class="form-control"
                     placeholder="••••••••"
                   />
                 </div>
                 <div class="form-group">
-                  <label>Kata Sandi Baru</label>
+                  <label for="new_password">Kata Sandi Baru</label>
                   <input
                     type="password"
+                    id="new_password"
                     class="form-control"
                     placeholder="Minimal 8 karakter"
                   />
                 </div>
                 <div class="form-group">
-                  <label>Konfirmasi Kata Sandi Baru</label>
+                  <label for="confirm_password"
+                    >Konfirmasi Kata Sandi Baru</label
+                  >
                   <input
                     type="password"
+                    id="confirm_password"
                     class="form-control"
                     placeholder="Ulangi kata sandi baru"
                   />
@@ -580,8 +647,8 @@
       </div>
     </main>
 
+    <!-- JavaScript Toggle Sidebar -->
     <script>
-      // Fungsi Toggle Sidebar untuk Mobile
       const menuToggle = document.getElementById("menuToggle");
       const sidebarNav = document.getElementById("sidebarNav");
       const sidebarOverlay = document.getElementById("sidebarOverlay");

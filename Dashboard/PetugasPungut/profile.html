@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profil Admin Bank - Green Generation</title>
-    <link rel="icon" href="../Icons/tea-leaf.png" type="image/png" />
+    <title>Profil Petugas Pungut - Green Generation</title>
+    <link rel="icon" href="../../Icons/tea-leaf.png" type="image/png" />
     <!-- Google Font 'Inter' -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
@@ -49,6 +49,7 @@
         position: fixed;
         height: 100vh;
         z-index: 100;
+        transition: transform 0.3s ease;
       }
 
       .brand {
@@ -99,11 +100,28 @@
         font-weight: 600;
       }
 
+      /* --- OVERLAY UNTUK MOBILE --- */
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 90;
+      }
+
+      .sidebar-overlay.active {
+        display: block;
+      }
+
       /* --- MAIN CONTENT --- */
       .main-content {
         margin-left: 260px;
         flex: 1;
         padding: 2rem 2.5rem;
+        width: calc(100% - 260px);
       }
 
       .top-bar {
@@ -111,6 +129,25 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 2rem;
+      }
+
+      .page-title-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      /* Tombol Toggle Mobile */
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: 1px solid var(--border-color);
+        background-color: var(--card-bg);
+        font-size: 1.25rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 8px;
+        cursor: pointer;
+        color: var(--text-dark);
       }
 
       .page-title-area h1 {
@@ -299,17 +336,19 @@
 
       @media (max-width: 1024px) {
         .sidebar {
-          width: 80px;
-          padding: 1.5rem 0.75rem;
-          align-items: center;
+          transform: translateX(-100%);
         }
-        .brand span,
-        .nav-item span,
-        .role-badge {
-          display: none;
+        .sidebar.active {
+          transform: translateX(0);
         }
         .main-content {
-          margin-left: 80px;
+          margin-left: 0;
+          width: 100%;
+        }
+        .menu-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
         }
         .profile-layout {
           grid-template-columns: 1fr;
@@ -317,11 +356,7 @@
       }
 
       @media (max-width: 640px) {
-        .sidebar {
-          display: none;
-        }
         .main-content {
-          margin-left: 0;
           padding: 1.5rem 1rem;
         }
         .form-grid {
@@ -334,59 +369,49 @@
     </style>
   </head>
   <body>
+    <!-- Overlay untuk Sidebar Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Sidebar Navigation -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebarNav">
       <div>
         <a href="#" class="brand">
           <span>🌿</span>
           <span>Green Generation</span>
-          <span class="role-badge">Admin</span>
+          <span class="role-badge">Petugas</span>
         </a>
         <ul class="nav-list">
           <li class="nav-item">
-            <a href="home.html">
-              <span>📊</span>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="laporan_penyetoran.html">
+            <a href="setor_plastik.html">
               <span>📝</span>
-              <span>Laporan Penyetoran</span>
+              <span>Setor Plastik</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="setting_data.html">
-              <span>⚙️</span>
-              <span>Setting Data</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="disbursement_admin_bank.html">
-              <span>💸</span>
-              <span>Disbursement</span>
+            <a href="laporan.html">
+              <span>📑</span>
+              <span>Laporan Hasil Pemungutan</span>
             </a>
           </li>
           <li class="nav-item active">
-            <a href="profile_admin_bank.html">
+            <a href="profile.html">
               <span
                 ><img
-                  src="../Icons/office-material.png"
-                  alt="user"
-                  srcset=""
-                  width="20px"
+                  src="../../Icons/office-material.png"
+                  alt="edit"
+                  width="15px"
               /></span>
-              <span>Edit Profile</span>
+              <span>Edit Profil</span>
             </a>
           </li>
         </ul>
       </div>
       <ul class="nav-list">
         <li class="nav-item">
-          <a href="../Login/admin_bank.html" class="logout-link">
+          <a href="../../Login/petugas_pungut.html" class="logout-link">
             <span
               ><img
-                src="../Icons/logout.png"
+                src="../../Icons/logout.png"
                 alt="logout"
                 srcset=""
                 width="15px"
@@ -400,12 +425,17 @@
     <!-- Main Content Area -->
     <main class="main-content">
       <header class="top-bar">
-        <div class="page-title-area">
-          <h1>Pengaturan Profil Admin Bank</h1>
-          <p>
-            Manajemen data unit bank sampah dan kredensial hak akses
-            administrator.
-          </p>
+        <div class="page-title-wrapper">
+          <!-- Tombol Toggle Sidebar -->
+          <button class="menu-toggle" id="menuToggle" title="Buka Menu">
+            ☰
+          </button>
+          <div class="page-title-area">
+            <h1>Pengaturan Profil Petugas Pungut</h1>
+            <p>
+              Kelola identitas operasional penugasan dan kata sandi akun Anda.
+            </p>
+          </div>
         </div>
       </header>
 
@@ -414,8 +444,8 @@
         <div class="avatar-card">
           <div class="avatar-wrapper">
             <img
-              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=250"
-              alt="Avatar Admin"
+              src="https://images.unsplash.com/photo-1610141160723-d2d346e73766?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Avatar Petugas"
               class="avatar-img"
             />
             <label
@@ -426,82 +456,69 @@
             >
             <input type="file" id="upload-avatar" hidden accept="image/*" />
           </div>
-          <h3>Dra. Ratna Lestari</h3>
-          <span class="user-role">Admin Bank </span>
-          <p class="user-id">NIP: ADM-BNI-102</p>
+          <h3>Bambang Suprapto</h3>
+          <span class="user-role">Petugas Pungut</span>
+          <p class="user-id">ID: PTG-2026-004</p>
         </div>
 
         <!-- Form Area -->
         <div>
-          <!-- Form Informasi Admin Bank -->
+          <!-- Form Informasi Personal -->
           <div class="form-card">
             <div class="form-card-header">
-              <h2>Informasi Admin Bank</h2>
-              <p>Manajemen profil administrator dan unit induk pengelola.</p>
+              <h2>Informasi Petugas Pungut</h2>
+              <p>Data identitas operasional penugasan lapangan.</p>
             </div>
             <form
               onsubmit="
                 event.preventDefault();
-                alert('Profil Admin berhasil diperbarui!');
+                alert('Profil Petugas berhasil diperbarui!');
               "
             >
               <div class="form-grid">
                 <div class="form-group">
-                  <label>ID / NIP Administrator</label>
+                  <label>ID Petugas (Sistem)</label>
                   <input
                     type="text"
                     class="form-control"
-                    value="ADM-BNI-102"
+                    value="PTG-2026-004"
                     readonly
                   />
                 </div>
                 <div class="form-group">
-                  <label>Nama Unit Bank </label>
+                  <label>NIK / No. Identitas</label>
                   <input
                     type="text"
                     class="form-control"
-                    value="Bank BNI Madiun Kota"
+                    value="3519012803890001"
                   />
                 </div>
                 <div class="form-group">
-                  <label>Nama Lengkap Admin</label>
+                  <label>Nama Lengkap</label>
                   <input
                     type="text"
                     class="form-control"
-                    value="Dra. Ratna Lestari"
+                    value="Bambang Suprapto"
                   />
                 </div>
                 <div class="form-group">
-                  <label>Email Resmi</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    value="ratna.admin@bank.id"
-                  />
+                  <label>No. HP / WhatsApp</label>
+                  <input type="tel" class="form-control" value="081234567890" />
                 </div>
                 <div class="form-group">
-                  <label>No. Telepon / Kantor</label>
-                  <input
-                    type="tel"
-                    class="form-control"
-                    value="(0351) 462910"
-                  />
+                  <label>Wilayah Zona Pungut (Kecamatan)</label>
+                  <select class="form-control">
+                    <option selected>Kec. Taman</option>
+                    <option>Kec. Kartoharjo</option>
+                    <option>Kec. Manguharjo</option>
+                  </select>
                 </div>
                 <div class="form-group">
-                  <label>Tingkat Hak Akses</label>
+                  <label>Jenis & Plat Kendaraan Operasional</label>
                   <input
                     type="text"
                     class="form-control"
-                    value="Super Admin / Verifikator Utama"
-                    readonly
-                  />
-                </div>
-                <div class="form-group full-width">
-                  <label>Alamat Unit / Kantor Bank </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Jl. Pahlawan No. 42, Kartoharjo, Kota Madiun"
+                    value="Tossa / Pick-up (AE 8192 BD)"
                   />
                 </div>
               </div>
@@ -517,13 +534,13 @@
           <!-- Form Keamanan -->
           <div class="form-card">
             <div class="form-card-header">
-              <h2>Keamanan & Otentikasi</h2>
-              <p>Perbarui kata sandi akun administrator secara berkala.</p>
+              <h2>Keamanan Akun</h2>
+              <p>Perbarui kata sandi untuk menjaga keamanan akun Anda.</p>
             </div>
             <form
               onsubmit="
                 event.preventDefault();
-                alert('Kata sandi Admin berhasil diperbarui!');
+                alert('Kata sandi berhasil diperbarui!');
               "
             >
               <div class="form-grid">
@@ -562,5 +579,20 @@
         </div>
       </div>
     </main>
+
+    <script>
+      // Fungsi Toggle Sidebar untuk Mobile
+      const menuToggle = document.getElementById("menuToggle");
+      const sidebarNav = document.getElementById("sidebarNav");
+      const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+      function toggleSidebar() {
+        sidebarNav.classList.toggle("active");
+        sidebarOverlay.classList.toggle("active");
+      }
+
+      menuToggle.addEventListener("click", toggleSidebar);
+      sidebarOverlay.addEventListener("click", toggleSidebar);
+    </script>
   </body>
 </html>

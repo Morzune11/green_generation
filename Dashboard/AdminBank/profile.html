@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profil Admin Sekolah - Green Generation</title>
-    <link rel="icon" href="../Icons/tea-leaf.png" type="image/png" />
+    <title>Profil Admin Bank - Green Generation</title>
+    <link rel="icon" href="../../Icons/tea-leaf.png" type="image/png" />
     <!-- Google Font 'Inter' -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
@@ -28,8 +28,6 @@
         --text-dark: #0f172a;
         --text-muted: #64748b;
         --border-color: #e2e8f0;
-        --danger-color: #ef4444;
-        --danger-light: #fef2f2;
       }
 
       body {
@@ -39,7 +37,7 @@
         min-height: 100vh;
       }
 
-      /* --- SIDEBAR NAVIGATION --- */
+      /* --- SIDEBAR --- */
       .sidebar {
         width: 260px;
         background-color: var(--card-bg);
@@ -51,7 +49,6 @@
         position: fixed;
         height: 100vh;
         z-index: 100;
-        transition: transform 0.3s ease;
       }
 
       .brand {
@@ -65,7 +62,7 @@
         margin-bottom: 2.5rem;
       }
 
-      .admin-badge {
+      .role-badge {
         background-color: var(--primary-light);
         color: var(--primary-color);
         font-size: 0.75rem;
@@ -102,36 +99,11 @@
         font-weight: 600;
       }
 
-      .logout-link {
-        color: var(--danger-color) !important;
-      }
-
-      .logout-link:hover {
-        background-color: var(--danger-light) !important;
-      }
-
-      /* --- OVERLAY UNTUK MOBILE --- */
-      .sidebar-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.4);
-        z-index: 90;
-      }
-
-      .sidebar-overlay.active {
-        display: block;
-      }
-
-      /* --- MAIN CONTENT AREA --- */
+      /* --- MAIN CONTENT --- */
       .main-content {
         margin-left: 260px;
         flex: 1;
         padding: 2rem 2.5rem;
-        width: calc(100% - 260px);
       }
 
       .top-bar {
@@ -139,25 +111,6 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 2rem;
-      }
-
-      .page-title-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      /* Tombol Toggle Mobile */
-      .menu-toggle {
-        display: none;
-        background: none;
-        border: 1px solid var(--border-color);
-        background-color: var(--card-bg);
-        font-size: 1.25rem;
-        padding: 0.5rem 0.75rem;
-        border-radius: 8px;
-        cursor: pointer;
-        color: var(--text-dark);
       }
 
       .page-title-area h1 {
@@ -202,13 +155,6 @@
         border-radius: 50%;
         object-fit: cover;
         border: 3px solid var(--primary-light);
-        background-color: var(--primary-color);
-        color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2.25rem;
-        font-weight: 700;
       }
 
       .btn-upload-avatar {
@@ -250,7 +196,7 @@
         margin-top: 0.5rem;
       }
 
-      /* Form Cards */
+      /* Form Card */
       .form-card {
         background-color: var(--card-bg);
         border: 1px solid var(--border-color);
@@ -307,27 +253,16 @@
         font-size: 0.875rem;
         outline: none;
         transition: border-color 0.2s;
-        background-color: #ffffff;
-        color: var(--text-dark);
       }
 
       .form-control:focus {
         border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
       }
 
-      .form-control[readonly],
-      .form-control[disabled] {
+      .form-control[readonly] {
         background-color: var(--bg-color);
         color: var(--text-muted);
         cursor: not-allowed;
-        border-color: var(--border-color);
-      }
-
-      .input-hint {
-        font-size: 0.75rem;
-        color: var(--text-muted);
-        margin-top: 0.2rem;
       }
 
       .form-actions {
@@ -345,10 +280,6 @@
         cursor: pointer;
         border: 1px solid transparent;
         transition: all 0.2s;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
       }
 
       .btn-primary {
@@ -366,26 +297,19 @@
         color: var(--text-dark);
       }
 
-      .btn-secondary:hover {
-        background-color: var(--border-color);
-      }
-
-      /* Responsif */
       @media (max-width: 1024px) {
         .sidebar {
-          transform: translateX(-100%);
+          width: 80px;
+          padding: 1.5rem 0.75rem;
+          align-items: center;
         }
-        .sidebar.active {
-          transform: translateX(0);
+        .brand span,
+        .nav-item span,
+        .role-badge {
+          display: none;
         }
         .main-content {
-          margin-left: 0;
-          width: 100%;
-        }
-        .menu-toggle {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
+          margin-left: 80px;
         }
         .profile-layout {
           grid-template-columns: 1fr;
@@ -393,7 +317,11 @@
       }
 
       @media (max-width: 640px) {
+        .sidebar {
+          display: none;
+        }
         .main-content {
+          margin-left: 0;
           padding: 1.5rem 1rem;
         }
         .form-grid {
@@ -406,48 +334,62 @@
     </style>
   </head>
   <body>
-    <!-- Overlay untuk Sidebar Mobile -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
     <!-- Sidebar Navigation -->
-    <aside class="sidebar" id="sidebarNav">
+    <aside class="sidebar">
       <div>
-        <a href="dashboard.html" class="brand">
+        <a href="#" class="brand">
           <span>🌿</span>
           <span>Green Generation</span>
-          <span class="admin-badge">Admin</span>
+          <span class="role-badge">Admin</span>
         </a>
         <ul class="nav-list">
           <li class="nav-item">
-            <a href="setor_plastik_admin_sekolah.html">
-              <span>📝</span>
-              <span>Setor Plastik</span>
+            <a href="index.html">
+              <span>📊</span>
+              <span>Dashboard</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="laporan_admin_sekolah.html">
-              <span>📑</span>
-              <span>Laporan Rekap Sekolah</span>
+            <a href="laporan_penyetoran.html">
+              <span>📝</span>
+              <span>Laporan Penyetoran</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="setting_data.html">
+              <span>⚙️</span>
+              <span>Setting Data</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="disbursement.html">
+              <span>💸</span>
+              <span>Disbursement</span>
             </a>
           </li>
           <li class="nav-item active">
-            <a href="profile_admin_sekolah.html">
+            <a href="profile.html">
               <span
                 ><img
-                  src="../Icons/office-material.png"
-                  alt="edit"
-                  width="15px"
+                  src="../../Icons/office-material.png"
+                  alt="user"
+                  srcset=""
+                  width="20px"
               /></span>
-              <span>Edit Profil</span>
+              <span>Edit Profile</span>
             </a>
           </li>
         </ul>
       </div>
       <ul class="nav-list">
         <li class="nav-item">
-          <a href="../Login/admin_sekolah.html" class="logout-link">
+          <a href="../../Login/admin_bank.html" class="logout-link">
             <span
-              ><img src="../Icons/logout.png" alt="logout" width="15px"
+              ><img
+                src="../../Icons/logout.png"
+                alt="logout"
+                srcset=""
+                width="15px"
             /></span>
             <span>Keluar</span>
           </a>
@@ -458,26 +400,24 @@
     <!-- Main Content Area -->
     <main class="main-content">
       <header class="top-bar">
-        <div class="page-title-wrapper">
-          <!-- Tombol Toggle Sidebar -->
-          <button class="menu-toggle" id="menuToggle" title="Buka Menu">
-            ☰
-          </button>
-          <div class="page-title-area">
-            <h1>Pengaturan Profil Admin Sekolah</h1>
-            <p>
-              Kelola data identitas akun, informasi sekolah, dan keamanan Anda.
-            </p>
-          </div>
+        <div class="page-title-area">
+          <h1>Pengaturan Profil Admin Bank</h1>
+          <p>
+            Manajemen data unit bank sampah dan kredensial hak akses
+            administrator.
+          </p>
         </div>
       </header>
 
       <div class="profile-layout">
-        <!-- Left Column: Avatar Card -->
+        <!-- Avatar Card -->
         <div class="avatar-card">
           <div class="avatar-wrapper">
-            <!-- Avatar Inisial Nama -->
-            <div class="avatar-img">AS</div>
+            <img
+              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=250"
+              alt="Avatar Admin"
+              class="avatar-img"
+            />
             <label
               for="upload-avatar"
               class="btn-upload-avatar"
@@ -486,151 +426,127 @@
             >
             <input type="file" id="upload-avatar" hidden accept="image/*" />
           </div>
-          <h3>Admin Sekolah</h3>
-          <span class="user-role">Admin Sekolah</span>
-          <p class="user-id">NIP: 19850315 201001 2 003</p>
+          <h3>Dra. Ratna Lestari</h3>
+          <span class="user-role">Admin Bank </span>
+          <p class="user-id">NIP: ADM-BNI-102</p>
         </div>
 
-        <!-- Right Column: Form Sections -->
+        <!-- Form Area -->
         <div>
-          <!-- Card 1: Informasi Admin & Sekolah -->
+          <!-- Form Informasi Admin Bank -->
           <div class="form-card">
             <div class="form-card-header">
-              <h2>Informasi Admin & Sekolah</h2>
-              <p>Data identitas pengelola dan entitas sekolah terdaftar.</p>
+              <h2>Informasi Admin Bank</h2>
+              <p>Manajemen profil administrator dan unit induk pengelola.</p>
             </div>
             <form
-              action="#"
-              method="POST"
               onsubmit="
                 event.preventDefault();
-                alert('Profil Admin Sekolah berhasil diperbarui!');
+                alert('Profil Admin berhasil diperbarui!');
               "
             >
               <div class="form-grid">
                 <div class="form-group">
-                  <label for="nama">Nama Lengkap</label>
+                  <label>ID / NIP Administrator</label>
                   <input
                     type="text"
-                    id="nama"
-                    name="nama"
                     class="form-control"
-                    value="Admin Sekolah"
-                    placeholder="Masukkan nama lengkap"
-                    required
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label for="nip">NIP / ID Pegawai</label>
-                  <input
-                    type="text"
-                    id="nip"
-                    class="form-control"
-                    value="19850315 201001 2 003"
+                    value="ADM-BNI-102"
                     readonly
                   />
                 </div>
-
                 <div class="form-group">
-                  <label for="sekolah">Nama Sekolah</label>
+                  <label>Nama Unit Bank </label>
                   <input
                     type="text"
-                    id="sekolah"
-                    name="sekolah"
                     class="form-control"
-                    value="SMAN 1 Madiun"
-                    disabled
+                    value="Bank BNI Madiun Kota"
                   />
-                  <span class="input-hint"
-                    >Asal sekolah terikat dengan sistem dan tidak dapat diubah
-                    secara mandiri.</span
-                  >
                 </div>
-
                 <div class="form-group">
-                  <label for="jabatan">Jabatan / Peran</label>
+                  <label>Nama Lengkap Admin</label>
                   <input
                     type="text"
-                    id="jabatan"
                     class="form-control"
-                    value="Pengelola Bank Sampah Sekolah"
-                    placeholder="Contoh: Koordinator Bank Sampah"
+                    value="Dra. Ratna Lestari"
                   />
                 </div>
-
                 <div class="form-group">
-                  <label for="telepon">No. HP / WhatsApp</label>
-                  <input
-                    type="tel"
-                    id="telepon"
-                    class="form-control"
-                    value="081334567890"
-                    placeholder="08xxxxxxxxxx"
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label for="email">Email Admin / Instansi</label>
+                  <label>Email Resmi</label>
                   <input
                     type="email"
-                    id="email"
                     class="form-control"
-                    value="admin@sman1madiun.sch.id"
-                    placeholder="nama@sekolah.sch.id"
+                    value="ratna.admin@bank.id"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>No. Telepon / Kantor</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    value="(0351) 462910"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Tingkat Hak Akses</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Super Admin / Verifikator Utama"
+                    readonly
+                  />
+                </div>
+                <div class="form-group full-width">
+                  <label>Alamat Unit / Kantor Bank </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Jl. Pahlawan No. 42, Kartoharjo, Kota Madiun"
                   />
                 </div>
               </div>
-
               <div class="form-actions">
-                <a href="profile_admin_sekolah.html" class="btn btn-secondary"
-                  >Batal</a
-                >
+                <button type="button" class="btn btn-secondary">Batal</button>
                 <button type="submit" class="btn btn-primary">
-                  💾 Simpan Perubahan
+                  Simpan Perubahan
                 </button>
               </div>
             </form>
           </div>
 
-          <!-- Card 2: Keamanan Akun -->
+          <!-- Form Keamanan -->
           <div class="form-card">
             <div class="form-card-header">
-              <h2>Keamanan Akun</h2>
-              <p>Perbarui kata sandi untuk menjaga keamanan akun admin Anda.</p>
+              <h2>Keamanan & Otentikasi</h2>
+              <p>Perbarui kata sandi akun administrator secara berkala.</p>
             </div>
             <form
               onsubmit="
                 event.preventDefault();
-                alert('Kata sandi berhasil diperbarui!');
+                alert('Kata sandi Admin berhasil diperbarui!');
               "
             >
               <div class="form-grid">
                 <div class="form-group full-width">
-                  <label for="current_password">Kata Sandi Saat Ini</label>
+                  <label>Kata Sandi Saat Ini</label>
                   <input
                     type="password"
-                    id="current_password"
                     class="form-control"
                     placeholder="••••••••"
                   />
                 </div>
                 <div class="form-group">
-                  <label for="new_password">Kata Sandi Baru</label>
+                  <label>Kata Sandi Baru</label>
                   <input
                     type="password"
-                    id="new_password"
                     class="form-control"
                     placeholder="Minimal 8 karakter"
                   />
                 </div>
                 <div class="form-group">
-                  <label for="confirm_password"
-                    >Konfirmasi Kata Sandi Baru</label
-                  >
+                  <label>Konfirmasi Kata Sandi Baru</label>
                   <input
                     type="password"
-                    id="confirm_password"
                     class="form-control"
                     placeholder="Ulangi kata sandi baru"
                   />
@@ -646,20 +562,5 @@
         </div>
       </div>
     </main>
-
-    <!-- JavaScript Toggle Sidebar -->
-    <script>
-      const menuToggle = document.getElementById("menuToggle");
-      const sidebarNav = document.getElementById("sidebarNav");
-      const sidebarOverlay = document.getElementById("sidebarOverlay");
-
-      function toggleSidebar() {
-        sidebarNav.classList.toggle("active");
-        sidebarOverlay.classList.toggle("active");
-      }
-
-      menuToggle.addEventListener("click", toggleSidebar);
-      sidebarOverlay.addEventListener("click", toggleSidebar);
-    </script>
   </body>
 </html>
