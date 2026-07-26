@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tambah Data Siswa Baru - Green Generation</title>
+    <link rel="icon" href="../../Icons/tea-leaf.png" type="image/png" />
+    <!-- Google Font 'Inter' -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      :root {
+        --primary-color: #16a34a;
+        --primary-hover: #15803d;
+        --primary-light: #f0fdf4;
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-dark: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+        --danger-color: #ef4444;
+        --danger-light: #fef2f2;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-dark);
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* --- OVERLAY BACKGROUND (MOBILE) --- */
+      .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(2px);
+        z-index: 99;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* --- SIDEBAR NAVIGATION --- */
+      .sidebar {
+        width: 260px;
+        background-color: var(--card-bg);
+        border-right: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 2rem 1.5rem;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+        transition:
+          transform 0.3s ease,
+          width 0.3s ease;
+      }
+
+      .brand {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .admin-badge {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-left: auto;
+      }
+
+      .nav-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .nav-item a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+      }
+
+      .nav-item a:hover,
+      .nav-item.active a {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+
+      .logout-link {
+        color: var(--danger-color) !important;
+      }
+
+      .logout-link:hover {
+        background-color: var(--danger-light) !important;
+      }
+
+      /* --- MAIN CONTENT AREA --- */
+      .main-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 2rem 2.5rem;
+        transition: margin-left 0.3s ease;
+        max-width: 1200px;
+      }
+
+      /* Top Bar Header */
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        gap: 1rem;
+      }
+
+      .top-bar-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .menu-toggle {
+        display: none;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0.5rem 0.75rem;
+        font-size: 1.25rem;
+        cursor: pointer;
+        color: var(--text-dark);
+        transition: all 0.2s ease;
+      }
+
+      .menu-toggle:hover {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+      }
+
+      /* BREADCRUMB & PAGE HEADING */
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 0.35rem;
+      }
+
+      .breadcrumb a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+
+      .page-title-area h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: var(--card-bg);
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+        border: 1px solid var(--border-color);
+      }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.875rem;
+      }
+
+      /* --- FORM CONTAINER CARD --- */
+      .form-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        margin-bottom: 2rem;
+      }
+
+      .form-header {
+        margin-bottom: 1.75rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .form-header h2 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--text-dark);
+      }
+
+      .form-header p {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 0.25rem;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .form-group.full-width {
+        grid-column: span 2;
+      }
+
+      label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-dark);
+      }
+
+      label .required {
+        color: var(--danger-color);
+      }
+
+      input[type="text"],
+      input[type="number"],
+      input[type="tel"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: var(--text-dark);
+        background-color: #fff;
+        outline: none;
+        transition: all 0.2s ease;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+      }
+
+      input[readonly] {
+        background-color: var(--bg-color);
+        color: var(--text-muted);
+        cursor: not-allowed;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 90px;
+      }
+
+      .input-with-button {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .btn-inline {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+      }
+
+      .btn-inline:hover {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      /* Radio Button Custom Group */
+      .radio-group {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+        margin-top: 0.25rem;
+      }
+
+      .radio-option {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .radio-option input[type="radio"] {
+        accent-color: var(--primary-color);
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+      }
+
+      /* FORM ACTIONS / BUTTONS */
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .btn-secondary {
+        background-color: var(--bg-color);
+        color: var(--text-dark);
+        border: 1px solid var(--border-color);
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s ease;
+      }
+
+      .btn-secondary:hover {
+        background-color: #f1f5f9;
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.75rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background 0.2s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: var(--primary-hover);
+      }
+
+      /* Toast Notification */
+      .toast {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background-color: #0f172a;
+        color: white;
+        padding: 0.9rem 1.4rem;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transform: translateY(150%);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 1000;
+      }
+
+      .toast.show {
+        transform: translateY(0);
+      }
+
+      .toast-icon {
+        background-color: var(--primary-color);
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+      }
+
+      /* Responsif Tablet & Mobile */
+      @media (max-width: 1024px) {
+        .sidebar {
+          width: 80px;
+          padding: 1.5rem 0.75rem;
+          align-items: center;
+        }
+        .brand span:not(:first-child),
+        .nav-item span:last-child,
+        .admin-badge {
+          display: none;
+        }
+        .main-content {
+          margin-left: 80px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: inline-block;
+        }
+        .sidebar {
+          width: 260px;
+          align-items: stretch;
+          transform: translateX(-100%);
+          box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar.active {
+          transform: translateX(0);
+        }
+        .brand span:not(:first-child),
+        .nav-item span:last-child,
+        .admin-badge {
+          display: inline;
+        }
+        .main-content {
+          margin-left: 0;
+          padding: 1.5rem 1rem;
+        }
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+        .form-group.full-width {
+          grid-column: span 1;
+        }
+        .form-actions {
+          flex-direction: column-reverse;
+        }
+        .btn-secondary,
+        .btn-primary {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Mobile Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar Navigation Admin -->
+    <aside class="sidebar" id="sidebar">
+      <div>
+        <a href="#" class="brand">
+          <span>🌿</span>
+          <span>Green Generation</span>
+          <span class="admin-badge">Admin</span>
+        </a>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="setor_plastik.html">
+              <span>📝</span>
+              <span>Setor Plastik</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="laporan.html">
+              <span>📑</span>
+              <span>Laporan Rekap Sekolah</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a href="tambah_siswa.html">
+              <span
+                ><img src="../../Icons/user add.png" alt="add new" width="20px"
+              /></span>
+              <span>Tambah Siswa Baru</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="profile.html">
+              <span>
+                <img
+                  src="../../Icons/office-material.png"
+                  alt="edit"
+                  width="15px"
+                />
+              </span>
+              <span>Edit Profil</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="../../Login/admin_sekolah.html" class="logout-link">
+            <span>
+              <img src="../../Icons/logout.png" alt="logout" width="15px" />
+            </span>
+            <span>Keluar</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Bar Header -->
+      <header class="top-bar">
+        <div class="top-bar-left">
+          <button class="menu-toggle" id="menuToggle" aria-label="Buka Menu">
+            ☰
+          </button>
+          <div class="page-title-area">
+            <!-- <div class="breadcrumb">
+              <a href="laporan.html">Laporan Rekap Sekolah</a>
+              <span>/</span>
+              <span>Tambah Siswa Baru</span>
+            </div> -->
+            <h1>Formulir Tambah Siswa</h1>
+          </div>
+        </div>
+        <div class="user-profile">
+          <div class="avatar">AD</div>
+          <div style="display: flex; flex-direction: column">
+            <span style="font-size: 0.875rem; font-weight: 600"
+              >Admin Sekolah</span
+            >
+            <span style="font-size: 0.75rem; color: var(--text-muted)"
+              >SMAN 1 Madiun</span
+            >
+          </div>
+        </div>
+      </header>
+
+      <!-- Form Container Card -->
+      <div class="form-card">
+        <div class="form-header">
+          <div>
+            <h2>Identitas & Rekening Tabungan Siswa</h2>
+            <p>
+              Isi formulir di bawah ini untuk mendaftarkan siswa baru ke sistem
+              Bank Sampah Digital.
+            </p>
+          </div>
+          <span style="font-size: 0.8rem; color: var(--text-muted)">
+            <span class="required" style="color: var(--danger-color)">*</span>
+            Wajib diisi
+          </span>
+        </div>
+
+        <form id="addStudentForm" onsubmit="handleFormSubmit(event)">
+          <div class="form-grid">
+            <!-- Nama Lengkap -->
+            <div class="form-group">
+              <label for="fullName">
+                Nama Lengkap Siswa <span class="required">*</span>
+              </label>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                placeholder="Contoh: Budi Santoso"
+                required
+              />
+            </div>
+
+            <!-- NISN -->
+            <div class="form-group">
+              <label for="nisn">
+                NISN (Nomor Induk Siswa Nasional)
+                <span class="required">*</span>
+              </label>
+              <input
+                type="text"
+                id="nisn"
+                name="nisn"
+                placeholder="10 digit nomor NISN (Contoh: 0054819203)"
+                maxlength="10"
+                pattern="[0-9]{10}"
+                required
+              />
+            </div>
+
+            <!-- Kelas -->
+            <div class="form-group">
+              <label for="kelas"> Kelas <span class="required">*</span> </label>
+              <select id="kelas" name="kelas" required>
+                <option value="" disabled selected>-- Pilih Kelas --</option>
+                <optgroup label="Kelas X">
+                  <option value="X IPA 1">X IPA 1</option>
+                  <option value="X IPA 2">X IPA 2</option>
+                  <option value="X IPS 1">X IPS 1</option>
+                </optgroup>
+                <optgroup label="Kelas XI">
+                  <option value="XI IPA 1">XI IPA 1</option>
+                  <option value="XI IPA 2">XI IPA 2</option>
+                  <option value="XI IPS 1">XI IPS 1</option>
+                </optgroup>
+                <optgroup label="Kelas XII">
+                  <option value="XII IPA 1">XII IPA 1</option>
+                  <option value="XII IPA 2">XII IPA 2</option>
+                  <option value="XII IPS 1">XII IPS 1</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <!-- Jenis Kelamin -->
+            <div class="form-group">
+              <label>Jenis Kelamin <span class="required">*</span></label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="Laki-laki"
+                    checked
+                    required
+                  />
+                  Laki-laki
+                </label>
+                <label class="radio-option">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="Perempuan"
+                    required
+                  />
+                  Perempuan
+                </label>
+              </div>
+            </div>
+
+            <!-- Nomor Rekening Bank Sampah -->
+            <div class="form-group">
+              <label for="noRekening">
+                Nomor Rekening Tabungan <span class="required">*</span>
+              </label>
+              <div class="input-with-button">
+                <input
+                  type="text"
+                  id="noRekening"
+                  name="noRekening"
+                  placeholder="3512XXXXXXXX"
+                  required
+                />
+                <!-- <button
+                  type="button"
+                  class="btn-inline"
+                  onclick="generateRekening()"
+                  title="Buat Nomor Rekening Acak"
+                >
+                  ⚡ Acak No. Rek
+                </button> -->
+              </div>
+            </div>
+
+            <!-- Nomor WhatsApp / Kontak Parent -->
+            <div class="form-group">
+              <label for="phone"> No. WhatsApp Siswa / Orang Tua </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="Contoh: 081234567890"
+              />
+            </div>
+
+            <!-- Status Awal Akun -->
+            <div class="form-group">
+              <label for="status"
+                >Status Keaktifan <span class="required">*</span></label
+              >
+              <select id="status" name="status" required>
+                <option value="Aktif" selected>Aktif</option>
+                <option value="Non-Aktif">Non-Aktif</option>
+              </select>
+            </div>
+
+            <!-- Saldo Awal -->
+            <div class="form-group">
+              <label for="saldoAwal">Saldo Tabungan Awal (Rp)</label>
+              <input
+                type="number"
+                id="saldoAwal"
+                name="saldoAwal"
+                value="0"
+                min="0"
+              />
+            </div>
+
+            <!-- Alamat Rumah -->
+            <div class="form-group full-width">
+              <label for="alamat">Alamat Lengkap Siswa</label>
+              <textarea
+                id="alamat"
+                name="alamat"
+                placeholder="Jl. Pahlawan No. 12, Kel. Kartoharjo, Kota Madiun"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Buttons Action -->
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Simpan Data Siswa</button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Toast Notification Widget -->
+    <div class="toast" id="toastNotification">
+      <div class="toast-icon">✓</div>
+      <span id="toastMessage">Data siswa berhasil disimpan!</span>
+    </div>
+
+    <!-- JavaScript Interactions -->
+    <script>
+      // Sidebar Toggle Mobile
+      const menuToggle = document.getElementById("menuToggle");
+      const sidebar = document.getElementById("sidebar");
+      const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+      function toggleSidebar() {
+        sidebar.classList.toggle("active");
+        sidebarOverlay.classList.toggle("active");
+      }
+
+      if (menuToggle) {
+        menuToggle.addEventListener("click", toggleSidebar);
+        sidebarOverlay.addEventListener("click", toggleSidebar);
+      }
+
+      // Generate Random Unique Rekening Number
+      //   function generateRekening() {
+      //     // Format: 3512 + 6 digit acak (misal Madiun Code 3512)
+      //     const prefix = "3512";
+      //     const randomDigits = Math.floor(100000 + Math.random() * 900000);
+      //     const generatedRek = prefix + randomDigits;
+      //     document.getElementById("noRekening").value = generatedRek;
+      //   }
+
+      //   // Auto Generate Rekening on page load
+      //   window.addEventListener("DOMContentLoaded", function () {
+      //     generateRekening();
+      //   });
+
+      // Handle Form Submit
+      function handleFormSubmit(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("fullName").value;
+        const rek = document.getElementById("noRekening").value;
+
+        // Show Toast
+        showToast(`Siswa "${name}" (${rek}) berhasil ditambahkan!`);
+
+        // Redirect back to Laporan page after 1.5 seconds
+        setTimeout(() => {
+          window.location.href = `laporan.html?added=${encodeURIComponent(name)}`;
+        }, 1500);
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById("toastNotification");
+        const toastMsg = document.getElementById("toastMessage");
+        toastMsg.innerText = message;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>
