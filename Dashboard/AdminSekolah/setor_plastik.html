@@ -262,74 +262,35 @@
         font-family: "Inter", sans-serif;
         color: #0f172a;
         background-color: #ffffff;
-        border: 1.5px solid #e2e8f0; /* --border-color */
+        border: 1.5px solid #e2e8f0;
         border-radius: 8px;
         cursor: pointer;
         transition: all 0.2s ease;
 
-        /* Hilangkan panah default browser */
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
 
-        /* Tambahkan panah kustom modern (SVG) */
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
         background-position: right 0.85rem center;
         background-size: 1.1rem;
       }
 
-      /* Hover State */
       .form-select:hover {
         border-color: #cbd5e1;
       }
 
-      /* Focus State (Saat Diklik/Aktif) */
       .form-select:focus {
         outline: none;
-        border-color: #16a34a; /* --primary-color */
+        border-color: #16a34a;
         box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
       }
 
-      /* Disabled State */
       .form-select:disabled {
         background-color: #f8fafc;
         cursor: not-allowed;
         opacity: 0.7;
-      }
-
-      /* Radio Group Styling (Jenis Plastik) */
-      .radio-options {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 0.75rem;
-        margin-top: 0.5rem;
-      }
-
-      .radio-card {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        padding: 0.75rem 1rem;
-        border: 1.5px solid var(--border-color);
-        border-radius: 8px;
-        background-color: var(--bg-color);
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-size: 0.9rem;
-        font-weight: 500;
-      }
-
-      .radio-card:hover {
-        border-color: var(--primary-color);
-        background-color: var(--primary-light);
-      }
-
-      .radio-card input[type="radio"] {
-        accent-color: var(--primary-color);
-        width: 18px;
-        height: 18px;
-        cursor: pointer;
       }
 
       /* Tombol Submit */
@@ -450,7 +411,48 @@
         background-color: var(--bg-color);
       }
 
-      /* Responsif Tablet (Maksimal 1024px) */
+      /* --- TOAST NOTIFICATION STYLING --- */
+      .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1100;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .toast {
+        background-color: #ffffff;
+        color: var(--text-dark);
+        padding: 1rem 1.25rem;
+        border-radius: 8px;
+        border-left: 4px solid var(--primary-color);
+        box-shadow:
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: all 0.3s ease;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .toast-icon {
+        color: var(--primary-color);
+        font-size: 1.25rem;
+        font-weight: bold;
+      }
+
+      /* Responsif Tablet & Mobile */
       @media (max-width: 1024px) {
         .sidebar {
           width: 80px;
@@ -467,7 +469,6 @@
         }
       }
 
-      /* Responsif Handphone / Mobile (Maksimal 768px) */
       @media (max-width: 768px) {
         .menu-toggle {
           display: inline-block;
@@ -481,7 +482,6 @@
         .sidebar.active {
           transform: translateX(0);
         }
-        /* Munculkan kembali teks label pada sidebar mobile saat terbuka */
         .brand span:not(:first-child),
         .nav-item span:last-child,
         .admin-badge {
@@ -491,13 +491,13 @@
           margin-left: 0;
           padding: 1.5rem 1rem;
         }
-        .radio-options {
-          grid-template-columns: 1fr;
-        }
       }
     </style>
   </head>
   <body>
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <!-- Overlay gelap saat sidebar aktif di HP -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -510,7 +510,6 @@
           <span class="admin-badge">Admin</span>
         </a>
         <ul class="nav-list">
-          <!-- Navigasi Aktif untuk Input Data Sekolah -->
           <li class="nav-item active">
             <a href="setor_plastik.html">
               <span>📝</span>
@@ -559,10 +558,8 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-      <!-- Top Bar Header -->
       <header class="top-bar">
         <div class="top-bar-left">
-          <!-- Tombol Trigger Hamburger Sidebar untuk HP -->
           <button class="menu-toggle" id="menuToggle" aria-label="Buka Menu">
             ☰
           </button>
@@ -587,7 +584,7 @@
       <!-- Form Card Input -->
       <div class="form-card">
         <form id="adminForm" onsubmit="showConfirmation(event)">
-          <!-- 1. Nama Siswa (Autocomplete) -->
+          <!-- 1. Nama Siswa -->
           <div class="form-group">
             <label for="nama" class="field-label">Nama Siswa</label>
             <input
@@ -599,7 +596,6 @@
               oninput="updateNoRekening()"
               required
             />
-            <!-- Datalist untuk Autocomplete -->
             <datalist id="siswaList">
               <option value="Budi Santoso"></option>
               <option value="Siti Aminah"></option>
@@ -608,7 +604,7 @@
             </datalist>
           </div>
 
-          <!-- 2. No Rekening (Disabled & Auto-filled) -->
+          <!-- 2. No Rekening -->
           <div class="form-group">
             <label for="no_rekening" class="field-label">No Rekening</label>
             <input
@@ -620,7 +616,7 @@
             />
           </div>
 
-          <!-- 3. Jenis Plastik (Dropdown / Select) -->
+          <!-- 3. Jenis Plastik -->
           <div class="form-group">
             <label for="jenis_plastik" class="field-label">Jenis Plastik</label>
             <div class="select-wrapper">
@@ -641,7 +637,7 @@
             </div>
           </div>
 
-          <!-- 4. Jumlah Berat (int) -->
+          <!-- 4. Jumlah Berat -->
           <div class="form-group">
             <label for="jumlah_berat" class="field-label"
               >Jumlah Berat / Kg</label
@@ -663,7 +659,7 @@
       </div>
     </main>
 
-    <!-- 6. MODAL KONFIRMASI (Pop-up sebelum menyimpan) -->
+    <!-- 6. MODAL KONFIRMASI -->
     <div class="modal-overlay" id="confirmModal">
       <div class="modal-box">
         <div class="modal-header">
@@ -708,7 +704,7 @@
       </div>
     </div>
 
-    <!-- JavaScript Logika Modal & Toggle Sidebar -->
+    <!-- JavaScript Logika Modal, Toast Notification & Toggle Sidebar -->
     <script>
       const menuToggle = document.getElementById("menuToggle");
       const sidebar = document.getElementById("sidebar");
@@ -723,23 +719,23 @@
       sidebarOverlay.addEventListener("click", toggleSidebar);
 
       function showConfirmation(event) {
-        event.preventDefault(); // Mencegah reload halaman bawaan form
+        event.preventDefault();
 
-        // Ambil nilai input
         const noRek = document.getElementById("no_rekening").value;
         const nama = document.getElementById("nama").value;
-        const jenisPlastik = document.querySelector(
-          'input[name="jenis_plastik"]:checked',
-        ).value;
+
+        // Memperbaiki pengambilan value dari elemen select (karena sudah diubah ke tag <select>)
+        const jenisPlastikSelect = document.getElementById("jenis_plastik");
+        const jenisPlastik =
+          jenisPlastikSelect.options[jenisPlastikSelect.selectedIndex].text;
+
         const berat = document.getElementById("jumlah_berat").value;
 
-        // Masukkan nilai ke dalam Modal Konfirmasi
         document.getElementById("modalNoRekening").textContent = noRek;
         document.getElementById("modalNama").textContent = nama;
         document.getElementById("modalJenisPlastik").textContent = jenisPlastik;
         document.getElementById("modalJumlahBerat").textContent = berat + " Kg";
 
-        // Tampilkan Modal
         document.getElementById("confirmModal").classList.add("active");
       }
 
@@ -747,10 +743,36 @@
         document.getElementById("confirmModal").classList.remove("active");
       }
 
+      // Fungsi untuk menampilkan Toast Notification kustom
+      function showToast(message) {
+        const container = document.getElementById("toastContainer");
+
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.innerHTML = `<span class="toast-icon">✓</span> <span>${message}</span>`;
+
+        container.appendChild(toast);
+
+        // Trigger animasi masuk
+        setTimeout(() => {
+          toast.classList.add("show");
+        }, 10);
+
+        // Hapus toast setelah 3 detik
+        setTimeout(() => {
+          toast.classList.remove("show");
+          setTimeout(() => {
+            toast.remove();
+          }, 300);
+        }, 3000);
+      }
+
       function saveData() {
-        alert("✅ Data berhasil dikonfirmasi dan disimpan!");
         closeConfirmation();
-        document.getElementById("adminForm").reset(); // Reset form setelah berhasil
+        document.getElementById("adminForm").reset(); // Mengosongkan seluruh input field
+
+        // Tampilkan notifikasi berhasil dan tetap di halaman yang sama
+        showToast("Data setor plastik berhasil disimpan!");
       }
 
       // Database sederhana pasangan Nama & No Rekening
@@ -765,11 +787,10 @@
         const namaInput = document.getElementById("nama").value;
         const rekeningInput = document.getElementById("no_rekening");
 
-        // Cek apakah nama yang diinput ada di database
         if (dataSiswaRekening[namaInput]) {
           rekeningInput.value = dataSiswaRekening[namaInput];
         } else {
-          rekeningInput.value = ""; // Kosongkan jika nama belum dipilih/sesuai
+          rekeningInput.value = "";
         }
       }
     </script>

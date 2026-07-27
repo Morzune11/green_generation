@@ -204,37 +204,36 @@
         margin-top: 0.25rem;
       }
 
-      .user-profile {
+      /* --- NOTIFIKASI TOAST --- */
+      .toast-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #ffffff;
+        color: var(--text-dark);
+        padding: 1rem 1.25rem;
+        border-radius: 8px;
+        border-left: 4px solid var(--primary-color);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         display: flex;
         align-items: center;
-        gap: 1rem;
-        background: var(--card-bg);
-        padding: 0.5rem 1rem;
-        border-radius: 30px;
-        border: 1px solid var(--border-color);
+        gap: 0.75rem;
+        z-index: 1100;
+        transform: translateY(-120%);
+        transition: transform 0.3s ease-in-out;
       }
 
-      .avatar {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background-color: var(--primary-color);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
-        font-size: 0.875rem;
+      .toast-notification.active {
+        transform: translateY(0);
       }
 
-      .user-name {
-        font-size: 0.875rem;
-        font-weight: 600;
+      .toast-icon {
+        font-size: 1.25rem;
       }
 
-      .user-class {
-        font-size: 0.75rem;
-        color: var(--text-muted);
+      .toast-message {
+        font-size: 0.9rem;
+        font-weight: 500;
       }
 
       /* --- FORM CARD --- */
@@ -288,72 +287,27 @@
         font-family: "Inter", sans-serif;
         color: #0f172a;
         background-color: #ffffff;
-        border: 1.5px solid #e2e8f0; /* --border-color */
+        border: 1.5px solid #e2e8f0;
         border-radius: 8px;
         cursor: pointer;
         transition: all 0.2s ease;
-
-        /* Hilangkan panah default browser */
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
-
-        /* Tambahkan panah kustom modern (SVG) */
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
         background-position: right 0.85rem center;
         background-size: 1.1rem;
       }
 
-      /* Hover State */
       .form-select:hover {
         border-color: #cbd5e1;
       }
 
-      /* Focus State (Saat Diklik/Aktif) */
       .form-select:focus {
         outline: none;
-        border-color: #16a34a; /* --primary-color */
+        border-color: #16a34a;
         box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
-      }
-
-      /* Disabled State */
-      .form-select:disabled {
-        background-color: #f8fafc;
-        cursor: not-allowed;
-        opacity: 0.7;
-      }
-
-      .radio-options {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem;
-        margin-top: 0.4rem;
-      }
-
-      .radio-card {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.75rem 1rem;
-        border: 1.5px solid var(--border-color);
-        border-radius: 8px;
-        background-color: var(--bg-color);
-        cursor: pointer;
-        font-size: 0.875rem;
-        font-weight: 500;
-        transition: all 0.2s ease;
-      }
-
-      .radio-card:hover {
-        border-color: var(--primary-color);
-        background-color: var(--primary-light);
-      }
-
-      .radio-card input[type="radio"] {
-        accent-color: var(--primary-color);
-        width: 16px;
-        height: 16px;
       }
 
       .btn-submit {
@@ -485,15 +439,20 @@
         .main-content {
           padding: 1.5rem 1rem;
         }
-        .radio-options {
-          grid-template-columns: 1fr;
-        }
       }
     </style>
   </head>
   <body>
     <!-- Overlay untuk Sidebar Mobile -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Notifikasi Toast -->
+    <div class="toast-notification" id="toastNotification">
+      <span class="toast-icon">✅</span>
+      <span class="toast-message" id="toastMessage"
+        >Data berhasil disimpan!</span
+      >
+    </div>
 
     <!-- Navigation Sidebar -->
     <aside class="sidebar" id="sidebarNav">
@@ -533,11 +492,7 @@
         <li class="nav-item">
           <a href="../../Login/petugas_pungut.html" class="logout-link">
             <span
-              ><img
-                src="../../Icons/logout.png"
-                alt="logout"
-                srcset=""
-                width="15px"
+              ><img src="../../Icons/logout.png" alt="logout" width="15px"
             /></span>
             <span>Keluar</span>
           </a>
@@ -549,7 +504,6 @@
     <main class="main-content">
       <header class="top-bar">
         <div class="page-title-wrapper">
-          <!-- Tombol Toggle Sidebar -->
           <button class="menu-toggle" id="menuToggle" title="Buka Menu">
             ☰
           </button>
@@ -558,18 +512,11 @@
             <p>Input data penimbangan sampah plastik dari sekolah mitra.</p>
           </div>
         </div>
-        <!-- <div class="user-profile">
-          <div class="avatar">BS</div>
-          <div class="user-info">
-            <span class="user-name">Bambang Suprapto</span>
-            <span class="user-class">Petugas</span>
-          </div>
-        </div> -->
       </header>
 
       <div class="form-card">
         <form id="pungutForm" onsubmit="showConfirmation(event)">
-          <!-- ID Sekolah (int) -->
+          <!-- ID Sekolah -->
           <div class="form-group">
             <label for="id_sekolah" class="field-label">ID Sekolah</label>
             <input
@@ -581,7 +528,7 @@
             />
           </div>
 
-          <!-- Nama Sekolah (str) -->
+          <!-- Nama Sekolah -->
           <div class="form-group">
             <label for="nama_sekolah" class="field-label">Nama Sekolah</label>
             <div class="autocomplete-wrapper">
@@ -590,13 +537,13 @@
                 id="nama_sekolah"
                 placeholder="Contoh: SMAN 1 Madiun"
                 required
+                autocomplete="off"
               />
-              <!-- Container untuk daftar hasil pencarian -->
               <div id="sekolah_list" class="autocomplete-items"></div>
             </div>
           </div>
 
-          <!-- Jenis Plastik (Dropdown) -->
+          <!-- Jenis Plastik -->
           <div class="form-group">
             <label for="jenis_plastik" class="field-label">Jenis Plastik</label>
             <div class="select-wrapper">
@@ -606,10 +553,10 @@
                 class="form-select"
                 required
               >
-                <option value="" disabled hidden>
+                <option value="" disabled selected hidden>
                   -- Pilih Jenis Plastik --
                 </option>
-                <option value="Botol PET" selected>Botol PET</option>
+                <option value="Botol PET">Botol PET</option>
                 <option value="Gelas PP">Gelas PP</option>
                 <option value="Plastik HDPE">HDPE</option>
                 <option value="Campuran">Campuran</option>
@@ -617,7 +564,7 @@
             </div>
           </div>
 
-          <!-- Jumlah Berat (int) -->
+          <!-- Jumlah Berat -->
           <div class="form-group">
             <label for="jumlah_berat" class="field-label"
               >Jumlah Berat / Kg</label
@@ -698,7 +645,6 @@
     </div>
 
     <script>
-      // Data daftar sekolah (bisa ditambah atau diambil dari API)
       const dataSekolah = [
         {
           id: 1,
@@ -728,66 +674,52 @@
       ];
 
       const namaSekolah = document.getElementById("nama_sekolah");
-      const idSekolahInput = document.getElementById("id_sekolah"); // Opsional: jika ada input ID Sekolah
+      const idSekolahInput = document.getElementById("id_sekolah");
       const listContainer = document.getElementById("sekolah_list");
 
       function tampilkanSaran(keyword) {
         const val = keyword.toLowerCase();
-        listContainer.innerHTML = ""; // Bersihkan list sebelumnya
-
+        listContainer.innerHTML = "";
         if (!val) return;
 
-        // Filter sekolah yang cocok
         const filtered = dataSekolah.filter((item) =>
           item.nama.toLowerCase().includes(val),
         );
-
         if (filtered.length === 0) return;
 
-        // Tampilkan hasil pencarian
         filtered.forEach((item) => {
           const div = document.createElement("div");
           div.classList.add("autocomplete-item");
+          div.innerHTML = `<img src="${item.logo}" alt="Logo ${item.nama}" /><span>${item.nama}</span>`;
 
-          // Elemen Logo + Nama
-          div.innerHTML = `
-      <img src="${item.logo}" alt="Logo ${item.nama}" />
-      <span>${item.nama}</span>
-    `;
-
-          // Event ketika item dipilih
           div.addEventListener("click", function () {
             namaSekolah.value = item.nama;
             if (idSekolahInput) {
-              idSekolahInput.value = item.id; // Otomatis isi ID jika elemen tersedia
+              idSekolahInput.value = item.id;
             }
-            listContainer.innerHTML = ""; // Sembunyikan list setelah dipilih
+            listContainer.innerHTML = "";
           });
 
           listContainer.appendChild(div);
         });
       }
 
-      // Event saat mengetik di input
       namaSekolah.addEventListener("input", function () {
         tampilkanSaran(this.value);
       });
 
-      // Event saat input diklik/fokus kembali
       namaSekolah.addEventListener("focus", function () {
         if (this.value) {
           tampilkanSaran(this.value);
         }
       });
 
-      // Sembunyikan dropdown jika user mengklik di luar input atau list container
       document.addEventListener("click", function (e) {
         if (e.target !== namaSekolah && !listContainer.contains(e.target)) {
           listContainer.innerHTML = "";
         }
       });
 
-      // Fungsi Toggle Sidebar untuk Mobile
       const menuToggle = document.getElementById("menuToggle");
       const sidebarNav = document.getElementById("sidebarNav");
       const sidebarOverlay = document.getElementById("sidebarOverlay");
@@ -817,23 +749,22 @@
         event.preventDefault();
 
         const idSekolah = document.getElementById("id_sekolah").value;
-        const namaSekolah = document.getElementById("nama_sekolah").value;
-        const jenisPlastik = document.querySelector(
-          'input[name="jenis_plastik"]:checked',
-        ).value;
+        const namaSekSekolahVal = document.getElementById("nama_sekolah").value;
+        const jenisPlastik = document.getElementById("jenis_plastik").value;
         const jumlahBerat = document.getElementById("jumlah_berat").value;
         const timestamp = getFormattedTimestamp();
 
         currentInputData = {
           idSekolah,
-          namaSekolah,
+          namaSekolah: namaSekSekolahVal,
           jenisPlastik,
           jumlahBerat,
           timestamp,
         };
 
         document.getElementById("modalIdSekolah").textContent = "#" + idSekolah;
-        document.getElementById("modalNamaSekolah").textContent = namaSekolah;
+        document.getElementById("modalNamaSekolah").textContent =
+          namaSekSekolahVal;
         document.getElementById("modalJenisPlastik").textContent = jenisPlastik;
         document.getElementById("modalJumlahBerat").textContent =
           jumlahBerat + " Kg";
@@ -844,6 +775,17 @@
 
       function closeConfirmation() {
         document.getElementById("confirmModal").classList.remove("active");
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById("toastNotification");
+        const toastMsg = document.getElementById("toastMessage");
+        toastMsg.textContent = message;
+        toast.classList.add("active");
+
+        setTimeout(() => {
+          toast.classList.remove("active");
+        }, 3000);
       }
 
       function saveData() {
@@ -868,7 +810,16 @@
 
         existingReports.unshift(currentInputData);
         localStorage.setItem("laporan_pungut", JSON.stringify(existingReports));
-        window.location.href = "laporan_petugas_pungut.html";
+
+        // Tutup modal konfirmasi
+        closeConfirmation();
+
+        // Reset/kosongkan isi form input
+        document.getElementById("pungutForm").reset();
+        document.getElementById("id_sekolah").value = "";
+
+        // Tampilkan notifikasi toast sukses
+        showToast("Data pemungutan berhasil disimpan!");
       }
     </script>
   </body>
