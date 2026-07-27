@@ -226,7 +226,14 @@
         <h1>Buat Akun Admin Sekolah Baru</h1>
         <p>Silakan isi formulir di bawah ini untuk mendaftar.</p>
       </div>
-      <form action="../Login/admin_sekolah.html" method="post">
+      <form
+        action="../Login/admin_sekolah.html"
+        method="post"
+        onsubmit="
+          event.preventDefault();
+          window.location.href = '../Login/admin_sekolah';
+        "
+      >
         <!-- Field 1: Username -->
         <div class="form-group">
           <label for="username">Username</label>

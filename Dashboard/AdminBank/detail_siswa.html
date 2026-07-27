@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Tabungan Siswa - Admin Green Generation</title>
+    <link rel="icon" href="../../Icons/tea-leaf.png" type="image/png" />
+    <!-- Google Font 'Inter' -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      :root {
+        --primary-color: #16a34a;
+        --primary-hover: #15803d;
+        --primary-light: #f0fdf4;
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-dark: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+        --danger-color: #ef4444;
+        --danger-light: #fef2f2;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-dark);
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* --- OVERLAY BACKGROUND (MOBILE) --- */
+      .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(2px);
+        z-index: 99;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* --- SIDEBAR NAVIGATION --- */
+      .sidebar {
+        width: 260px;
+        background-color: var(--card-bg);
+        border-right: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 2rem 1.5rem;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+        transition:
+          transform 0.3s ease,
+          width 0.3s ease;
+      }
+
+      .brand {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .admin-badge {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-left: auto;
+      }
+
+      .nav-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .nav-item a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+      }
+
+      .nav-item a:hover,
+      .nav-item.active a {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+
+      .logout-link {
+        color: var(--danger-color) !important;
+      }
+
+      .logout-link:hover {
+        background-color: var(--danger-light) !important;
+      }
+
+      /* --- MAIN CONTENT AREA --- */
+      .main-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 2rem 2.5rem;
+        transition: margin-left 0.3s ease;
+      }
+
+      /* Top Bar Header */
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        gap: 1rem;
+      }
+
+      .top-bar-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .menu-toggle {
+        display: none;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 0.5rem 0.75rem;
+        font-size: 1.25rem;
+        cursor: pointer;
+        color: var(--text-dark);
+        transition: all 0.2s ease;
+      }
+
+      .menu-toggle:hover {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+      }
+
+      /* BREADCRUMB & PAGE HEADING */
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 0.35rem;
+      }
+
+      .breadcrumb a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+
+      .page-title-area h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: var(--card-bg);
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+        border: 1px solid var(--border-color);
+      }
+
+      .user-name {
+        font-size: 0.8rem;
+        font-weight: 600;
+        line-height: 1.2;
+      }
+
+      .user-role {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+      }
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.875rem;
+      }
+
+      /* --- STUDENT PROFILE HEADER CARD --- */
+      .profile-header-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+
+      .student-info-main {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+      }
+
+      .student-avatar-lg {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #16a34a, #059669);
+        color: white;
+        font-size: 1.75rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(22, 163, 74, 0.25);
+      }
+
+      .student-details h2 {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .student-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 0.4rem;
+        font-size: 0.875rem;
+        color: var(--text-muted);
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .meta-item strong {
+        color: var(--text-dark);
+      }
+
+      .profile-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .role-badge {
+        background-color: var(--primary-light);
+        color: var(--primary-color);
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-left: auto;
+      }
+
+      .btn-secondary {
+        background-color: var(--bg-color);
+        color: var(--text-dark);
+        border: 1px solid var(--border-color);
+        padding: 0.65rem 1.25rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s ease;
+      }
+
+      .btn-secondary:hover {
+        background-color: #f1f5f9;
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.65rem 1.25rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background 0.2s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: var(--primary-hover);
+      }
+
+      /* --- KPI CARDS --- */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .stat-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        background-color: var(--primary-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.35rem;
+      }
+
+      .stat-info h3 {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+      }
+
+      .stat-info .value {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-top: 0.2rem;
+      }
+
+      /* --- SECTION GRID (PLASTIC BREAKDOWN & RECENT DEPOSITS) --- */
+      .section-grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .card-box {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.25rem;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .card-header h3 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text-dark);
+      }
+
+      /* Plastic Type Progress List */
+      .plastic-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .plastic-item-head {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        margin-bottom: 0.35rem;
+      }
+
+      .plastic-item-head span {
+        font-weight: 600;
+      }
+
+      .progress-bar-bg {
+        width: 100%;
+        height: 8px;
+        background-color: #f1f5f9;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .progress-bar-fill {
+        height: 100%;
+        border-radius: 10px;
+        background-color: var(--primary-color);
+      }
+
+      /* --- TABLE CARD --- */
+      .table-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+
+      .table-wrapper {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f8fafc;
+        color: var(--text-dark);
+        padding: 0.9rem 1.25rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        border-bottom: 2px solid var(--border-color);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      td {
+        padding: 1rem 1.25rem;
+        font-size: 0.875rem;
+        border-bottom: 1px solid var(--border-color);
+        vertical-align: middle;
+      }
+
+      tr:nth-child(even) td {
+        background-color: #fbfcfd;
+      }
+
+      tr:hover td {
+        background-color: var(--primary-light);
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 0.25rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      .badge-success {
+        background-color: #dcfce7;
+        color: #15803d;
+      }
+
+      .badge-info {
+        background-color: #e0f2fe;
+        color: #0369a1;
+      }
+
+      /* Print Header (hidden on web, shown on print) */
+      .print-header {
+        display: none;
+      }
+
+      /* --- PRINT MEDIA STYLES --- */
+      @media print {
+        body {
+          background-color: white;
+          color: black;
+        }
+
+        .sidebar,
+        .menu-toggle,
+        .breadcrumb,
+        .profile-actions,
+        .top-bar-right,
+        .user-profile,
+        .btn-secondary,
+        .btn-primary {
+          display: none !important;
+        }
+
+        .main-content {
+          margin-left: 0 !important;
+          padding: 0 !important;
+        }
+
+        .print-header {
+          display: block;
+          text-align: center;
+          margin-bottom: 1.5rem;
+          padding-bottom: 1rem;
+          border-bottom: 2px solid #000;
+        }
+
+        .print-header h2 {
+          font-size: 1.5rem;
+        }
+
+        .profile-header-card,
+        .card-box,
+        .stat-card,
+        .table-card {
+          border: 1px solid #ccc !important;
+          box-shadow: none !important;
+          break-inside: avoid;
+        }
+
+        .section-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Responsif Tablet & Mobile */
+      @media (max-width: 1024px) {
+        .sidebar {
+          width: 80px;
+          padding: 1.5rem 0.75rem;
+          align-items: center;
+        }
+        .brand span:not(:first-child),
+        .nav-item span:last-child,
+        .admin-badge {
+          display: none;
+        }
+        .main-content {
+          margin-left: 80px;
+        }
+        .section-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: inline-block;
+        }
+        .sidebar {
+          width: 260px;
+          align-items: stretch;
+          transform: translateX(-100%);
+          box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar.active {
+          transform: translateX(0);
+        }
+        .brand span:not(:first-child),
+        .nav-item span:last-child,
+        .admin-badge {
+          display: inline;
+        }
+        .main-content {
+          margin-left: 0;
+          padding: 1.5rem 1rem;
+        }
+        .profile-header-card {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .profile-actions {
+          width: 100%;
+        }
+        .btn-secondary,
+        .btn-primary {
+          flex: 1;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Mobile Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar Navigation Admin -->
+    <aside class="sidebar" id="sidebarNav">
+      <div>
+        <a href="#" class="brand">
+          <span>🌿</span>
+          <span>Green Generation</span>
+          <span class="role-badge">Admin</span>
+        </a>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html">
+              <span>📊</span>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a href="laporan_penyetoran.html">
+              <span>📝</span>
+              <span>Laporan Penyetoran</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="setting_data.html">
+              <span>⚙️</span>
+              <span>Setting Data</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="disbursement.html">
+              <span>💸</span>
+              <span>Disbursement</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="profile.html">
+              <span
+                ><img
+                  src="../../Icons/office-material.png"
+                  alt="user"
+                  srcset=""
+                  width="20px"
+              /></span>
+              <span>Edit Profile</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="../../Login/admin_bank.html" class="logout-link">
+            <span
+              ><img
+                src="../../Icons/logout.png"
+                alt="logout"
+                srcset=""
+                width="15px"
+            /></span>
+            <span>Keluar</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Print Document Header -->
+      <div class="print-header">
+        <h2>BANK SAMPAH DIGITAL CLASSAPP</h2>
+        <p>Laporan Riwayat Penyetoran & Tabungan Sampah Siswa</p>
+        <p style="font-size: 0.8rem; margin-top: 4px">
+          SMAN 1 Madiun - Kota Madiun
+        </p>
+      </div>
+
+      <!-- Top Bar Header -->
+      <header class="top-bar">
+        <div class="top-bar-left">
+          <button class="menu-toggle" id="menuToggle" aria-label="Buka Menu">
+            ☰
+          </button>
+          <div class="page-title-area">
+            <div class="breadcrumb">
+              <a href="laporan_penyetoran.html">← Laporan Rekap</a>
+              <span>/</span>
+              <span>Detail Tabungan Siswa</span>
+            </div>
+            <h1>Buku Tabungan Siswa</h1>
+          </div>
+        </div>
+        <div class="user-profile">
+          <div class="avatar">AD</div>
+          <div style="display: flex; flex-direction: column">
+            <span class="user-name">Admin Bank</span>
+            <span class="user-role">BNI</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Student Profile Header Card -->
+      <section class="profile-header-card">
+        <div class="student-info-main">
+          <div class="student-avatar-lg" id="studentAvatar">BS</div>
+          <div class="student-details">
+            <h2 id="studentName">
+              Budi Santoso
+              <span class="badge badge-success" id="studentStatus">Aktif</span>
+            </h2>
+            <div class="student-meta">
+              <div class="meta-item">
+                <span>No. Rekening:</span>
+                <strong id="studentRek">1234567890</strong>
+              </div>
+              <div class="meta-item">
+                <span>NISN:</span>
+                <strong id="studentNISN">0054819203</strong>
+              </div>
+              <div class="meta-item">
+                <span>Kelas:</span>
+                <strong id="studentKelas">XII IPA 1</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-actions">
+          <a href="laporan_penyetoran.html" class="btn-secondary">
+            ⬅️ Kembali
+          </a>
+          <button class="btn-primary" onclick="window.print()">
+            🖨️ Cetak Buku Tabungan
+          </button>
+        </div>
+      </section>
+
+      <!-- KPI Metric Cards -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">⚖️</div>
+          <div class="stat-info">
+            <h3>Total Plastik Terkumpul</h3>
+            <div class="value" id="statTotalKg">7.5 Kg</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-info">
+            <h3>Total Saldo Tabungan</h3>
+            <div class="value" id="statSaldo">Rp 37.500</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🔄</div>
+          <div class="stat-info">
+            <h3>Total Penyetoran</h3>
+            <div class="value" id="statTransaksi">4 Transaksi</div>
+          </div>
+        </div>
+        <!-- <div class="stat-card">
+          <div class="stat-icon">🌱</div>
+          <div class="stat-info">
+            <h3>Estimasi CO₂ Dicegah</h3>
+            <div class="value" id="statCO2">18.7 Kg CO₂e</div>
+          </div>
+        </div> -->
+      </section>
+
+      <!-- Section: Breakdown & Recent Activity -->
+      <div class="section-grid">
+        <!-- Plastic Breakdown Card -->
+        <div class="card-box">
+          <div class="card-header">
+            <h3>Kategori Plastik</h3>
+            <span style="font-size: 0.75rem; color: var(--text-muted)"
+              >Persentase Jenis</span
+            >
+          </div>
+          <div class="plastic-list">
+            <div>
+              <div class="plastic-item-head">
+                <span>Botol PET (Bening)</span>
+                <span id="petKg">4.5 kg (60%)</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width: 60%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="plastic-item-head">
+                <span>Gelas PP (Minuman)</span>
+                <span id="ppKg">1.8 kg (24%)</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div
+                  class="progress-bar-fill"
+                  style="width: 24%; background-color: #0284c7"
+                ></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="plastic-item-head">
+                <span>Keras HDPE (Tutup/Botol)</span>
+                <span id="hdpeKg">1.2 kg (16%)</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div
+                  class="progress-bar-fill"
+                  style="width: 16%; background-color: #f59e0b"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Summary Box -->
+        <div
+          class="card-box"
+          style="
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          "
+        >
+          <div class="card-header">
+            <h3>Catatan Keaktifan Siswa</h3>
+            <span class="badge badge-info">Sangat Rajin</span>
+          </div>
+          <p
+            style="
+              font-size: 0.9rem;
+              color: var(--text-muted);
+              leading-height: 1.6;
+            "
+          >
+            Siswa ini terdaftar aktif sejak bulan Mei 2026 dan secara konsisten
+            menyetorkan sampah plastik setiap minggu. Tidak ada riwayat
+            transaksi bermasalah. Tabungan siap ditukarkan atau ditarik sesuai
+            periode pencairan sekolah.
+          </p>
+          <div
+            style="
+              margin-top: 1rem;
+              padding: 0.75rem 1rem;
+              background-color: var(--primary-light);
+              border-radius: 8px;
+              font-size: 0.85rem;
+              color: var(--primary-hover);
+              font-weight: 500;
+            "
+          >
+            💡 <strong>Rekomendasi:</strong> Pertahankan tingkat keaktifan untuk
+            mendapatkan Penghargaan Duta Hijau Sekolah pada semester ini.
+          </div>
+        </div>
+      </div>
+
+      <!-- Transaction History Table Card -->
+      <div class="table-card">
+        <div
+          style="
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <h3
+            style="font-size: 1rem; font-weight: 700; color: var(--text-dark)"
+          >
+            Riwayat Penyetoran Lengkap
+          </h3>
+          <span style="font-size: 0.8rem; color: var(--text-muted)">
+            Menampilkan seluruh log timbangan
+          </span>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Tanggal & Waktu</th>
+                <th>Jenis Plastik</th>
+                <th>Berat (Kg)</th>
+                <th>Harga / Kg</th>
+                <th>Total Saldo</th>
+                <!-- <th>Petugas Pungut</th> -->
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="depositTableBody">
+              <tr>
+                <td>1</td>
+                <td><strong>24 Jul 2026</strong> - 08:30 WIB</td>
+                <td>Botol PET Bening</td>
+                <td><strong>2.5 kg</strong></td>
+                <td>Rp 5.000</td>
+                <td><strong>Rp 12.500</strong></td>
+                <!-- <td>Pak Supri (Armada 1)</td> -->
+                <td><span class="badge badge-success">Terverifikasi</span></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><strong>18 Jul 2026</strong> - 09:15 WIB</td>
+                <td>Gelas Plastik PP</td>
+                <td><strong>1.8 kg</strong></td>
+                <td>Rp 5.000</td>
+                <td><strong>Rp 9.000</strong></td>
+                <!-- <td>Pak Supri (Armada 1)</td> -->
+                <td><span class="badge badge-success">Terverifikasi</span></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><strong>10 Jul 2026</strong> - 08:45 WIB</td>
+                <td>Plastik HDPE Keras</td>
+                <td><strong>1.2 kg</strong></td>
+                <td>Rp 5.000</td>
+                <td><strong>Rp 6.000</strong></td>
+                <!-- <td>Pak Budi (Armada 2)</td> -->
+                <td><span class="badge badge-success">Terverifikasi</span></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><strong>02 Jul 2026</strong> - 08:10 WIB</td>
+                <td>Botol PET Bening</td>
+                <td><strong>2.0 kg</strong></td>
+                <td>Rp 5.000</td>
+                <td><strong>Rp 10.000</strong></td>
+                <!-- <td>Pak Supri (Armada 1)</td> -->
+                <td><span class="badge badge-success">Terverifikasi</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- JavaScript Interactions -->
+    <script>
+      // Toggle Sidebar Mobile
+      const menuToggle = document.getElementById("menuToggle");
+      const sidebar = document.getElementById("sidebar");
+      const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+      function toggleSidebar() {
+        sidebar.classList.toggle("active");
+        sidebarOverlay.classList.toggle("active");
+      }
+
+      if (menuToggle) {
+        menuToggle.addEventListener("click", toggleSidebar);
+        sidebarOverlay.addEventListener("click", toggleSidebar);
+      }
+
+      // Read URL Query Parameters to customize student details
+      document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const nameParam = urlParams.get("nama");
+        const rekParam = urlParams.get("rek");
+        const kelasParam = urlParams.get("kelas");
+        const totalParam = urlParams.get("total");
+
+        if (nameParam) {
+          document.getElementById("studentName").childNodes[0].nodeValue =
+            nameParam + " ";
+          document.getElementById("studentAvatar").innerText = nameParam
+            .split(" ")
+            .map((n) => n[0])
+            .join("")
+            .substring(0, 2)
+            .toUpperCase();
+        }
+
+        if (rekParam) {
+          document.getElementById("studentRek").innerText = rekParam;
+        }
+
+        if (kelasParam) {
+          document.getElementById("studentKelas").innerText = kelasParam;
+        }
+
+        if (totalParam) {
+          document.getElementById("statTotalKg").innerText = totalParam + " Kg";
+        }
+      });
+    </script>
+  </body>
+</html>

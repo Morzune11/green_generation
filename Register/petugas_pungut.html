@@ -228,7 +228,14 @@
       </div>
 
       <!-- Form Registrasi -->
-      <form action="../Login/petugas_pungut.html" method="POST">
+      <form
+        action="../Login/petugas_pungut.html"
+        method="POST"
+        onsubmit="
+          event.preventDefault();
+          window.location.href = '../Login/petugas_pungut.html';
+        "
+      >
         <!-- Field 1: Username -->
         <div class="form-group">
           <label for="username">Username</label>
